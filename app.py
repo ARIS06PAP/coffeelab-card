@@ -14,7 +14,7 @@ import requests
 st.set_page_config(page_title="Coffee Lab Reward Protocol", page_icon="☕", layout="centered")
 
 # 🚨 ΒΑΛΕ ΕΔΩ ΤΟ URL ΠΟΥ ΕΚΑΝΕΣ COPY ΑΠΟ ΤΟ GOOGLE APPS SCRIPT
-SCRIPT_URL = "https://script.google.com/macros/library/d/112_uVjBC1KIkcKlShX30YI5NBG6MUpM3Fzh2VG5DeeSAyLa-U09NlQWV/2" 
+SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2qkoK1xDY9uZnRWXso3yjAbK-iV5KOW2IcSyaEPrQlEItfWkPZjQr_elQA2Fz3ZDNwg/exec" 
 
 # --- OFFICIAL COFFEE LAB BRANDING (CSS INJECT) ---
 st.markdown("""
