@@ -1,3 +1,8 @@
+# ======================================================
+# COFFEELAB PROJECT - PRODUCTION READY
+# Features: Anti-Cheat via URL, Live Ticking Clock, 24h Countdown
+# ======================================================
+
 import streamlit as st
 import random
 import time
@@ -5,6 +10,7 @@ import time
 # --- CONFIG ---
 st.set_page_config(page_title="CoffeeLab x Aris", page_icon="☕")
 
+# Clean & Dark Look
 st.markdown("""
     <style>
     .stApp { background-color: #050505; }
@@ -25,6 +31,7 @@ st.title("⚡ System Access Granted")
 st.subheader("CoffeeLab x Aris Project")
 st.write("---")
 
+# Λίστα Δώρων
 rewards = [
     "🎁 1+1 Καφές (Optimization Protocol)",
     "🎁 -20% στην επόμενη παραγγελία",
@@ -36,10 +43,11 @@ rewards = [
 # Διαβάζουμε τα Query Params από το URL
 query_params = st.query_params
 
+# 1. Έλεγχος αν ο χρήστης έχει ήδη κλειδωμένο δώρο στο URL
 if "gift" in query_params:
     saved_gift = query_params["gift"]
     
-    # Αν δεν υπάρχει timestamp έναρξης στο URL, βάζουμε το τρέχον
+    # Αν για κάποιο λόγο δεν υπάρχει το timestamp, το βάζουμε τώρα
     if "t" not in query_params:
         st.query_params["t"] = str(int(time.time()))
     
@@ -50,8 +58,8 @@ if "gift" in query_params:
     st.write("---")
     st.info("Δείξε αυτή την οθόνη ζωντανά στον Δημήτρη ή στο ταμείο για το redeem.")
 
-    # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS (No cross-origin storage issues)
-    # Περνάμε το start_ts απευθείας μέσα στο script για να υπολογίζει το 24ωρο
+    # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS
+    # Χρήση f-string με double braces {{ }} για να μην μπερδεύεται ο compiler της Python
     live_clock_html = f"""
     <div id="countdown-box" style="
         font-family: monospace;
@@ -71,26 +79,25 @@ if "gift" in query_params:
     <script>
     const startTimestamp = parseInt("{start_ts}");
     
-    function updateClock() {
+    function updateClock() {{
         const now = new Date();
         const currentTimestamp = Math.floor(Date.now() / 1000);
         
-        // 1. Μορφοποίηση Τρέχουσας Ώρας
-        const timeStr = now.toLocaleTimeString('el-GR', { hour12: false });
+        // Μορφοποίηση Ώρας Ελλάδας
+        const timeStr = now.toLocaleTimeString('el-GR', {{ hour12: false }});
         const dateStr = now.toLocaleDateString('el-GR');
         
-        // 2. Υπολογισμός Αντίστροφης Μέτρησης 24 Ωρών (24 * 3600 = 86400 δευτερόλεπτα)
+        // Υπολογισμός Αντίστροφης Μέτρησης 24 Ωρών (86400 δευτερόλεπτα)
         const elapsedTime = currentTimestamp - startTimestamp;
         const remainingTime = 86400 - elapsedTime;
         
         const box = document.getElementById("countdown-box");
         
-        if (remainingTime <= 0) {
+        if (remainingTime <= 0) {{
             box.innerHTML = "❌ ΤΟ ΚΟΥΠΟΝΙ ΕΛΗΞΕ!<br><span style='font-size:14px; color:gray;'>🔒 Το χρονικό όριο των 24 ωρών παρήλθε.</span>";
             box.style.borderColor = "gray";
             box.style.color = "#ff4b4b";
-        } else {
-            // Μετατροπή δευτερολέπτων σε Ώρες:Λεπτά:Δευτερόλεπτα
+        }} else {{
             const hours = Math.floor(remainingTime / 3600);
             const minutes = Math.floor((remainingTime % 3600) / 60);
             const seconds = remainingTime % 60;
@@ -101,10 +108,10 @@ if "gift" in query_params:
                 (seconds < 10 ? "0" : "") + seconds;
             
             box.innerHTML = "📅 " + dateStr + " — ⏰ " + timeStr + "<br><span style='color:#00ff41;'>⏳ ΛΗΞΗ ΣΕ: " + timerStr + "</span>";
-        }
-    }
+        }}
+    }}
 
-    // Εκτέλεση και ανανέωση ανά δευτερόλεπτο
+    // Ανανέωση ανά 1 δευτερόλεπτο
     setInterval(updateClock, 1000);
     updateClock();
     </script>
@@ -113,7 +120,7 @@ if "gift" in query_params:
     st.warning("🔒 Το σύστημα κλείδωσε. Δεν επιτρέπονται επιπλέον προσπάθειες.")
 
 else:
-    # Αρχική οθόνη με το κουμπί
+    # 2. Αρχική οθόνη με το κουμπί (Αν δεν υπάρχει 'gift' στο URL)
     st.markdown("**User Verified.** Πάτα το κουμπί για να γίνει το generate του reward.")
     
     if st.button('GENERATE REWARD'):
@@ -123,7 +130,7 @@ else:
             final_reward = random.choice(rewards)
             current_ts = str(int(time.time()))
             
-            # Κλειδώνουμε το δώρο και το timestamp στο URL
+            # Κλειδώνουμε το δώρο και το τρέχον timestamp στο URL
             st.query_params["gift"] = final_reward
             st.query_params["t"] = current_ts
             
