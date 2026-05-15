@@ -378,7 +378,7 @@ else:
 # --- BRAND FOOTER ---
 st.markdown("""
     <div class="brand-footer">
-        <p>📍 Θα μας βρείτε στην: <span>Λεωφ. Ελ. Βενιζέλου 142, Ηλιούπολη</span></p>
-        <p>🕒 Open: <span>Καθημερινά 06:00 - 21:00</span></p>
+        <p>📍 Θα μας βρείτε στην: <span>Λεωφ. Σοφοκλή Βενιζέλου 106, Ηλιούπολη</span></p>
+        <p>🕒 Open: <span>Καθημερινά 07:00 - 23:00</span></p>
     </div>
 """, unsafe_allow_html=True)
