@@ -1,5 +1,5 @@
 # ======================================================
-# COFFEELAB PROJECT - COMPLETE PRODUCTION READY
+# COFFEELAB PROJECT - GOOGLE SHEETS AUTOMATION
 # Features: Lead Capture, Rarity Weights, Live Clock, Google Sheets DB
 # ======================================================
 
@@ -12,7 +12,7 @@ import zoneinfo
 # --- CONFIG ---
 st.set_page_config(page_title="CoffeeLab x Aris", page_icon="☕")
 
-# Clean & Dark Cyberpunk Look
+# Clean & Dark Look
 st.markdown("""
     <style>
     .stApp { background-color: #050505; }
@@ -33,20 +33,20 @@ st.title("⚡ System Access Granted")
 st.subheader("CoffeeLab x Aris Project")
 st.write("---")
 
-# 1. LIST OF REWARDS & WEIGHTS (Rarity Protocol)
+# Λίστα Δώρων & Πιθανότητες (Rarity Protocol)
 rewards = [
-    "🎁 1+1 Καφές (Optimization Protocol)", # 5% πιθανότητα
-    "🎁 -20% στην επόμενη παραγγελία",         # 15% πιθανότητα
-    "🎁 Δωρεάν Snack / Cookie",              # 15% πιθανότητα
-    "🎁 Upgrade σε Large μέγεθος",            # 32.5% πιθανότητα
-    "🎁 Free Extra Shot (Energy Boost)"       # 32.5% πιθανότητα
+    "🎁 1+1 Καφές (Optimization Protocol)",
+    "🎁 -20% στην επόμενη παραγγελία",
+    "🎁 Δωρεάν Snack / Cookie",
+    "🎁 Upgrade σε Large μέγεθος",
+    "🎁 Free Extra Shot (Energy Boost)"
 ]
 reward_weights = [5, 15, 15, 32.5, 32.5]
 
 # Διαβάζουμε τα Query Params από το URL
 query_params = st.query_params
 
-# 2. CHECK STATUS (Αν ο χρήστης έχει ήδη κλειδωμένο δώρο)
+# 1. CHECK STATUS (Αν ο χρήστης έχει ήδη παίξει)
 if "gift" in query_params:
     saved_gift = query_params["gift"]
     user_name = query_params.get("user", "Agent")
@@ -57,7 +57,7 @@ if "gift" in query_params:
     st.write("---")
     st.info("Δείξε αυτή την οθόνη ζωντανά στον Δημήτρη ή στο ταμείο για το redeem.")
 
-    # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS (No Cross-Origin Issues)
+    # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS
     live_clock_html = f"""
     <div id="countdown-box" style="
         font-family: monospace;
@@ -85,7 +85,7 @@ if "gift" in query_params:
         const dateStr = now.toLocaleDateString('el-GR');
         
         const elapsedTime = currentTimestamp - startTimestamp;
-        const remainingTime = 86400 - elapsedTime; // 24 ώρες αντίστροφη μέτρηση
+        const remainingTime = 86400 - elapsedTime;
         
         const box = document.getElementById("countdown-box");
         
@@ -115,7 +115,7 @@ if "gift" in query_params:
     st.warning("🔒 Το σύστημα κλείδωσε. Δεν επιτρέπονται επιπλέον προσπάθειες.")
 
 else:
-    # 3. INITIAL STATE - DATA CAPTURE
+    # 2. INITIAL STATE - DATA CAPTURE
     st.markdown("**User Verification Required.**")
     input_name = st.text_input("Πληκτρολόγησε το Όνομα ή το Instagram σου για να ξεκλειδώσεις το reward:", "")
     st.write("---")
@@ -126,30 +126,36 @@ else:
         if st.button('GENERATE REWARD'):
             with st.spinner('Securing Connection & Generating Reward...'):
                 
-                # Επιλογή δώρου βάσει Rarity Weights
+                # Υπολογισμός δώρου
                 final_reward = random.choices(rewards, weights=reward_weights, k=1)[0]
                 current_ts = str(int(time.time()))
                 
-                # 📊 GOOGLE SHEETS DATA PUSH
-                conn = st.connection("gsheets", type=st.ServiceConnection)
-                
-                # Ώρα Ελλάδας
-                tz = zoneinfo.ZoneInfo("Europe/Athens")
-                now_gr = datetime.now(tz)
-                date_str = now_gr.strftime("%d/%m/%Y")
-                time_str = now_gr.strftime("%H:%M:%S")
-                
-                new_row = {
-                    "Date": date_str,
-                    "Time": time_str,
-                    "User": input_name.strip(),
-                    "Reward": final_reward
-                }
-                
-                # Εγγραφή στο Sheet
-                conn.create(data=[new_row])
+                # 📊 GOOGLE SHEETS BACKGROUND PUSH
+                try:
+                    # Σύνδεση με το Google Sheet μέσω των Streamlit Secrets
+                    conn = st.connection("gsheets", type=st.ServiceConnection)
+                    
+                    # Παίρνουμε την ακριβή ώρα Ελλάδας για το logging
+                    tz = zoneinfo.ZoneInfo("Europe/Athens")
+                    now_gr = datetime.now(tz)
+                    date_str = now_gr.strftime("%d/%m/%Y")
+                    time_str = now_gr.strftime("%H:%M:%S")
+                    
+                    # Δημιουργία της νέας γραμμής δεδομένων
+                    new_row = {
+                        "Date": date_str,
+                        "Time": time_str,
+                        "User": input_name.strip(),
+                        "Reward": final_reward
+                    }
+                    
+                    # Append στο Google Sheet
+                    conn.create(data=[new_row])
+                except Exception as e:
+                    # Fail-safe: Αν κολλήσει το Google API, το app συνεχίζει κανονικά για να μην χάσει ο πελάτης το δώρο
+                    pass
 
-                # Κλείδωμα στα Query Params για Anti-Cheat
+                # Κλειδώνουμε το URL
                 st.query_params["gift"] = final_reward
                 st.query_params["t"] = current_ts
                 st.query_params["user"] = input_name.strip()
