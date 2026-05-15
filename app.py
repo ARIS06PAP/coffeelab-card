@@ -14,7 +14,7 @@ import requests
 st.set_page_config(page_title="Coffee Lab Reward Protocol", page_icon="☕", layout="centered")
 
 # 🚨 ΒΑΛΕ ΕΔΩ ΤΟ URL ΠΟΥ ΕΚΑΝΕΣ COPY ΑΠΟ ΤΟ GOOGLE APPS SCRIPT
-SCRIPT_URL = "ΕΔΩ_ΒΑΛΕ_ΤΟ_URL_ΣΟΥ" 
+SCRIPT_URL = "https://box.gr/delivery/ilioupoli/coffee-lab-hlioupolh" 
 
 # --- OFFICIAL COFFEE LAB BRANDING (CSS INJECT) ---
 st.markdown("""
