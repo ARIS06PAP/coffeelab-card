@@ -1,7 +1,6 @@
 import streamlit as st
 import random
 import time
-from datetime import datetime
 
 # --- CONFIG ---
 st.set_page_config(page_title="CoffeeLab x Aris", page_icon="☕")
@@ -19,18 +18,6 @@ st.markdown("""
         text-transform: uppercase;
     }
     .stSuccess { background-color: #1e1e1e; color: #00ff41; border: 1px solid #00ff41; }
-    .live-clock {
-        font-family: monospace;
-        font-size: 22px;
-        font-weight: bold;
-        color: #ff4b4b;
-        text-align: center;
-        background-color: #1a1a1a;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #ff4b4b;
-        margin-bottom: 15px;
-    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -46,66 +33,87 @@ rewards = [
     "🎁 Free Extra Shot (Energy Boost)"
 ]
 
-# Αρχικοποίηση session state για τοπική ασφάλεια (πριν το refresh)
-if "lock_gift" not in st.session_state:
-    st.session_state.lock_gift = None
-if "lock_time" not in st.session_state:
-    st.session_state.lock_time = None
-
 # Διαβάζουμε τα Query Params από το URL
 query_params = st.query_params
 
-# Καθορισμός αν ο χρήστης έχει ήδη κλειδωμένο δώρο (είτε στο URL είτε στο Session)
-current_gift = query_params.get("gift", st.session_state.lock_gift)
-start_timestamp = query_params.get("t", st.session_state.lock_time)
-
-if current_gift:
-    # Αν βρέθηκε δώρο, το κλειδώνουμε και στο session state για backup
-    st.session_state.lock_gift = current_gift
+if "gift" in query_params:
+    saved_gift = query_params["gift"]
     
-    if start_timestamp is None:
-        start_timestamp = int(time.time())
-        st.session_state.lock_time = start_timestamp
-    else:
-        start_timestamp = int(start_timestamp)
-        st.session_state.lock_time = start_timestamp
+    # Αν δεν υπάρχει timestamp έναρξης στο URL, βάζουμε το τρέχον
+    if "t" not in query_params:
+        st.query_params["t"] = str(int(time.time()))
+    
+    start_ts = query_params["t"]
 
-    # Υπολογισμός εναπομείναντος χρόνου (5 λεπτά = 300 δευτερόλεπτα)
-    elapsed = int(time.time()) - start_timestamp
-    remaining = 300 - elapsed
+    st.balloons()
+    st.success(f"TARGET ACQUIRED: {saved_gift}")
+    st.write("---")
+    st.info("Δείξε αυτή την οθόνη ζωντανά στον Δημήτρη ή στο ταμείο για το redeem.")
 
-    if remaining <= 0:
-        st.error("❌ ΤΟ ΚΟΥΠΟΝΙ ΕΛΗΞΕ!")
-        st.warning("🔒 Το χρονικό όριο των 5 λεπτών για την εξαργύρωση παρήλθε. Η οθόνη έχει κλειδώσει.")
-    else:
-        st.balloons()
-        st.success(f"TARGET ACQUIRED: {current_gift}")
-        st.write("---")
-        st.info("Δείξε αυτή την οθόνη ζωντανά στον Δημήτρη ή στο ταμείο για το redeem.")
-        
-        # Placeholder για το ρολόι που θα ανανεώνεται
-        clock_placeholder = st.empty()
-        
-        # Κουμπί για χειροκίνητο refresh του χρόνου από τον Δημήτρη/Πελάτη
-        st.button("🔄 ΑΝΑΝΕΩΣΗ ΩΡΑΣ / ΕΛΕΓΧΟΣ")
+    # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS (No cross-origin storage issues)
+    # Περνάμε το start_ts απευθείας μέσα στο script για να υπολογίζει το 24ωρο
+    live_clock_html = f"""
+    <div id="countdown-box" style="
+        font-family: monospace;
+        font-size: 22px;
+        font-weight: bold;
+        color: #ff4b4b;
+        text-align: center;
+        background-color: #1a1a1a;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #ff4b4b;
+        margin-bottom: 15px;
+    ">
+        Initializing Real-Time Clock...
+    </div>
 
-        # Εμφάνιση της τρέχουσας ώρας και του timer
-        now = datetime.now()
-        time_str = now.strftime("%H:%M:%S")
-        date_str = now.strftime("%d/%m/%Y")
+    <script>
+    const startTimestamp = parseInt("{start_ts}");
+    
+    function updateClock() {
+        const now = new Date();
+        const currentTimestamp = Math.floor(Date.now() / 1000);
         
-        mins, secs = divmod(remaining, 60)
-        timer_str = f"{mins:02d}:{secs:02d}"
+        // 1. Μορφοποίηση Τρέχουσας Ώρας
+        const timeStr = now.toLocaleTimeString('el-GR', { hour12: false });
+        const dateStr = now.toLocaleDateString('el-GR');
         
-        clock_placeholder.markdown(f"""
-            <div class="live-clock">
-                📅 {date_str} — ⏰ {time_str}<br>
-                <span style="color: #00ff41;">⏳ ΛΗΞΗ ΣΕ: {timer_str}</span>
-            </div>
-        """, unsafe_allow_html=True)
+        // 2. Υπολογισμός Αντίστροφης Μέτρησης 24 Ωρών (24 * 3600 = 86400 δευτερόλεπτα)
+        const elapsedTime = currentTimestamp - startTimestamp;
+        const remainingTime = 86400 - elapsedTime;
+        
+        const box = document.getElementById("countdown-box");
+        
+        if (remainingTime <= 0) {
+            box.innerHTML = "❌ ΤΟ ΚΟΥΠΟΝΙ ΕΛΗΞΕ!<br><span style='font-size:14px; color:gray;'>🔒 Το χρονικό όριο των 24 ωρών παρήλθε.</span>";
+            box.style.borderColor = "gray";
+            box.style.color = "#ff4b4b";
+        } else {
+            // Μετατροπή δευτερολέπτων σε Ώρες:Λεπτά:Δευτερόλεπτα
+            const hours = Math.floor(remainingTime / 3600);
+            const minutes = Math.floor((remainingTime % 3600) / 60);
+            const seconds = remainingTime % 60;
+            
+            const timerStr = 
+                (hours < 10 ? "0" : "") + hours + ":" + 
+                (minutes < 10 ? "0" : "") + minutes + ":" + 
+                (seconds < 10 ? "0" : "") + seconds;
+            
+            box.innerHTML = "📅 " + dateStr + " — ⏰ " + timeStr + "<br><span style='color:#00ff41;'>⏳ ΛΗΞΗ ΣΕ: " + timerStr + "</span>";
+        }
+    }
+
+    // Εκτέλεση και ανανέωση ανά δευτερόλεπτο
+    setInterval(updateClock, 1000);
+    updateClock();
+    </script>
+    """
+    st.components.v1.html(live_clock_html, height=120)
+    st.warning("🔒 Το σύστημα κλείδωσε. Δεν επιτρέπονται επιπλέον προσπάθειες.")
 
 else:
-    # Οθόνη παραγωγής δώρου (Αρχική κατάσταση)
+    # Αρχική οθόνη με το κουμπί
     st.markdown("**User Verified.** Πάτα το κουμπί για να γίνει το generate του reward.")
     
     if st.button('GENERATE REWARD'):
@@ -113,14 +121,10 @@ else:
             time.sleep(0.8)
             
             final_reward = random.choice(rewards)
-            current_ts = int(time.time())
+            current_ts = str(int(time.time()))
             
-            # Αποθήκευση στο Session State
-            st.session_state.lock_gift = final_reward
-            st.session_state.lock_time = current_ts
-            
-            # Αποθήκευση στο URL (Query Params)
+            # Κλειδώνουμε το δώρο και το timestamp στο URL
             st.query_params["gift"] = final_reward
-            st.query_params["t"] = str(current_ts)
+            st.query_params["t"] = current_ts
             
             st.rerun()
