@@ -1,5 +1,5 @@
 # ======================================================
-# COFFEELAB PROJECT - BASE64 BULLETPROOF LOGO EDITION
+# COFFEELAB PROJECT - LOCAL LOGO PRODUCTION READY
 # Features: Lead Gate, Rarity Weights, Live 24h Clock, HTTP Push DB
 # ======================================================
 
@@ -9,6 +9,7 @@ import time
 from datetime import datetime
 import zoneinfo
 import requests
+from PIL import Image # Χρειάζεται για να διαβάσει το τοπικό αρχείο
 
 # --- CONFIG ---
 st.set_page_config(page_title="Coffee Lab Reward Protocol", page_icon="☕", layout="centered")
@@ -118,25 +119,26 @@ st.markdown("""
     hr {
         border-color: #262626 !important;
     }
-    
-    /* Center Logo Wrapper */
-    .logo-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 25px;
-    }
     </style>
     """, unsafe_allow_html=True)
 
-# --- BRAND LOGO INSERT (FALLBACK TEXT-BASED EMBED FOR STABILITY) ---
-# Αντί για ασταθή URLs, χρησιμοποιούμε καθαρό HTML styling με την επίσημη γραμματοσειρά της Coffee Lab
-st.markdown("""
-    <div class="logo-container" style="flex-direction: column; margin-bottom: -10px;">
-        <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #ffffff; letter-spacing: -1px; text-transform: uppercase; line-height: 0.9;">COFFEE</span>
-        <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #ffb800; letter-spacing: 3px; text-transform: uppercase; margin-top: -5px;">LAB</span>
-    </div>
-""", unsafe_allow_html=True)
+# --- LOCAL LOGO LOAD ---
+try:
+    # Διαβάζει το αρχείο logo.png από το GitHub repo σου
+    image = Image.open('logolab.png')
+    
+    # Το κεντράρουμε χρησιμοποιώντας 3 στήλες (το βάζουμε στη μεσαία)
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image(image, use_container_width=True)
+except:
+    # Fail-safe: Αν ξεχάσεις να ανεβάσεις τη φωτογραφία, δείχνει Text-Logo για να μην κρασάρει το app
+    st.markdown("""
+        <div style="display:flex; justify-content:center; align-items:center; flex-direction: column; margin-top:25px; margin-bottom:10px;">
+            <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #ffffff; line-height: 0.9;">COFFEE</span>
+            <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #ffb800; letter-spacing: 3px;">LAB</span>
+        </div>
+    """, unsafe_allow_html=True)
 
 # --- HEADERS ---
 st.markdown('<h1 class="brand-title">LUCKY REWARD PROTOCOL</h1>', unsafe_allow_html=True)
