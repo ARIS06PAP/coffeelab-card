@@ -1,6 +1,6 @@
 # ======================================================
-# COFFEELAB PROJECT - OFFICIAL CYAN BRANDING EDITION
-# Features: Lead Gate, Rarity Weights, Live 24h Clock, HTTP Push DB
+# COFFEELAB PROJECT - COMPACT CYAN BRANDING EDITION
+# Features: Compact UI, Lead Gate, Rarity Weights, Live 24h Clock, HTTP Push DB
 # ======================================================
 
 import streamlit as st
@@ -9,7 +9,7 @@ import time
 from datetime import datetime
 import zoneinfo
 import requests
-from PIL import Image # Χρειάζεται για να διαβάσει το τοπικό αρχείο
+from PIL import Image
 
 # --- CONFIG ---
 st.set_page_config(page_title="Coffee Lab Reward Protocol", page_icon="☕", layout="centered")
@@ -17,47 +17,53 @@ st.set_page_config(page_title="Coffee Lab Reward Protocol", page_icon="☕", lay
 # 🚨 PRODUCTION GOOGLE APPS SCRIPT URL LOCKED
 SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2qkoK1xDY9uZnRWXso3yjAbK-iV5KOW2IcSyaEPrQlEItfWkPZjQr_elQA2Fz3ZDNwg/exec"
 
-# --- OFFICIAL COFFEE LAB CYAN BRANDING (CSS INJECT) ---
+# --- COMPACT COFFEE LAB CYAN BRANDING (CSS INJECT) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+    
+    /* Εξαφάνιση του default κενού χώρου στην κορυφή του Streamlit */
+    .block-container {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+        max-width: 500px !important;
+    }
     
     /* Coffee Lab Official Cyan/Light Blue Background */
     .stApp { 
         background: linear-gradient(180deg, #00b4d8 0%, #0077b6 100%);
     }
     
-    /* Όλα τα κείμενα γίνονται λευκά ή σκούρα ανάλογα με την αντίθεση */
     h1, h2, h3, p, span, label {
         font-family: 'Montserrat', sans-serif !important;
         color: #ffffff !important;
     }
     
-    /* Τίτλος με έντονο λευκό contrast πάνω στο γαλάζιο background */
+    /* Compact Τίτλος */
     .brand-title {
         font-family: 'Impact', 'Montserrat', sans-serif !important;
         font-weight: 900 !important;
         color: #ffffff !important;
         text-transform: uppercase;
-        letter-spacing: 2px;
+        letter-spacing: 1.5px;
         text-align: center;
-        margin-top: 20px;
-        margin-bottom: 5px;
-        font-size: 32px;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        margin-top: 5px;
+        margin-bottom: 2px;
+        font-size: 26px; /* Μικρότερο μέγεθος */
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
     
     .brand-subtitle {
         text-align: center;
         font-family: 'Share Tech Mono', monospace !important;
         color: #f1f1f1 !important;
-        font-size: 13px;
-        letter-spacing: 2px;
-        margin-bottom: 30px;
-        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+        font-size: 11px; /* Μικρότερο μέγεθος */
+        letter-spacing: 1.5px;
+        margin-bottom: 15px; /* Μειωμένο κενό */
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     }
 
-    /* Input Box με premium dark look για να κάνει contrast στο γαλάζιο */
+    /* Compact Input Box */
     div['data-baseweb']="input" {
         background-color: rgba(15, 15, 15, 0.85) !important;
         border: 2px solid #ffffff !important;
@@ -65,21 +71,22 @@ st.markdown("""
     }
     
     input {
-        color: #00b4d8 !important; /* Τα γράμματα μέσα στο input παίρνουν το γαλάζιο */
+        color: #00b4d8 !important;
         font-family: 'Montserrat', sans-serif !important;
         font-weight: bold !important;
+        padding: 8px !important; /* Πιο compact εσωτερικά */
     }
     
-    /* Μικρό label πάνω από το input */
     .stTextInput label p {
         color: #ffffff !important;
         font-weight: 700 !important;
+        font-size: 13px !important;
     }
 
-    /* Coffee Lab Premium Σκούρο/Μαύρο Κουμπί για απόλυτο contrast με το γαλάζιο */
+    /* Compact Premium Κουμπί */
     .stButton>button {
         width: 100%;
-        height: 3.8em;
+        height: 3.2em; /* Πιο χαμηλό σε ύψος */
         background-color: #0f0f0f !important; 
         color: #ffffff !important;
         font-family: 'Montserrat', sans-serif !important;
@@ -88,14 +95,15 @@ st.markdown("""
         border-radius: 8px !important;
         text-transform: uppercase;
         letter-spacing: 1px;
+        font-size: 14px !important; /* Ελαφρώς μικρότερα γράμματα */
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
     
     .stButton>button:hover {
         background-color: #ffffff !important;
-        color: #0077b6 !important; /* Στο hover γίνεται λευκό με γαλάζια γράμματα */
-        box-shadow: 0 0 25px rgba(255, 255, 255, 0.6) !important;
+        color: #0077b6 !important;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6) !important;
         transform: translateY(-1px);
         border: 2px solid #ffffff !important;
     }
@@ -108,26 +116,28 @@ st.markdown("""
         transform: none !important;
     }
 
-    /* Target Acquired Box - Brand Style με λευκό border */
+    /* Compact Success Box */
     .success-box {
         background: rgba(15, 15, 15, 0.85);
         border: 2px solid #ffffff;
         border-radius: 8px;
-        padding: 25px;
+        padding: 18px; /* Μειωμένο padding */
         text-align: center;
-        margin-bottom: 25px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        margin-bottom: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
     }
     
     .success-title {
-        color: #00b4d8 !important; /* Ο τίτλος επιτυχίας παίρνει το brand γαλάζιο */
+        color: #00b4d8 !important;
         font-family: 'Impact', sans-serif !important;
-        font-size: 26px;
+        font-size: 22px;
         letter-spacing: 1px;
     }
     
     hr {
         border-color: rgba(255, 255, 255, 0.3) !important;
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -135,14 +145,14 @@ st.markdown("""
 # --- LOCAL LOGO LOAD ---
 try:
     image = Image.open('logolab.png')
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns([1.2, 1.6, 1.2]) # Σφίξιμο στη μεσαία στήλη για να μικρύνει το logo
     with col2:
         st.image(image, use_container_width=True)
 except:
     st.markdown("""
-        <div style="display:flex; justify-content:center; align-items:center; flex-direction: column; margin-top:25px; margin-bottom:10px;">
-            <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #ffffff; line-height: 0.9;">COFFEE</span>
-            <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #0f0f0f; letter-spacing: 3px;">LAB</span>
+        <div style="display:flex; justify-content:center; align-items:center; flex-direction: column; margin-top:5px; margin-bottom:5px;">
+            <span style="font-family: 'Impact', sans-serif; font-size: 38px; font-weight: 900; color: #ffffff; line-height: 0.9;">COFFEE</span>
+            <span style="font-family: 'Impact', sans-serif; font-size: 38px; font-weight: 900; color: #0f0f0f; letter-spacing: 2px;">LAB</span>
         </div>
     """, unsafe_allow_html=True)
 
@@ -169,13 +179,12 @@ if "gift" in query_params:
 
     st.balloons()
     
-    # Brand Styled Success Box (Σκούρο φόντο με λευκό border για μέγιστο contrast)
     st.markdown(f"""
         <div class="success-box">
             <div class="success-title">🎯 ΚΕΡΔΙΣΕΣ!</div>
-            <p style='font-size: 16px; margin-top: 10px; color: #aaaaaa;'>Instagram ID: <span style='color:#ffffff; font-weight:bold;'>{user_name}</span></p>
-            <div style='background-color: #0077b6; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #ffffff;'>
-                <p style='font-size: 20px; font-weight: 900; color: #ffffff; margin: 0;'>{saved_gift}</p>
+            <p style='font-size: 15px; margin-top: 5px; color: #aaaaaa; margin-bottom: 0;'>Instagram ID: <span style='color:#ffffff; font-weight:bold;'>{user_name}</span></p>
+            <div style='background-color: #0077b6; padding: 12px; border-radius: 6px; margin-top: 10px; border: 1px solid #ffffff;'>
+                <p style='font-size: 18px; font-weight: 900; color: #ffffff; margin: 0;'>{saved_gift}</p>
             </div>
         </div>
     """, unsafe_allow_html=True)
@@ -187,15 +196,15 @@ if "gift" in query_params:
     live_clock_html = f"""
     <div id="countdown-box" style="
         font-family: 'Share Tech Mono', monospace;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: bold;
         color: #ff4b4b;
         text-align: center;
         background-color: #0f0f0f;
-        padding: 15px;
+        padding: 12px;
         border-radius: 8px;
         border: 2px solid #ff4b4b;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     ">
         Initializing Real-Time Clock...
     </div>
@@ -216,7 +225,7 @@ if "gift" in query_params:
         const box = document.getElementById("countdown-box");
         
         if (remainingTime <= 0) {{
-            box.innerHTML = "❌ ΤΟ ΚΟΥΠΟΝΙ ΕΛΗΞΕ!<br><span style='font-size:13px; color:gray;'>🔒 Το χρονικό όριο των 24 ωρών παρήλθε.</span>";
+            box.innerHTML = "❌ ΤΟ ΚΟΥΠΟΝΙ ΕΛΗΞΕ!<br><span style='font-size:12px; color:gray;'>🔒 Το χρονικό όριο των 24 ωρών παρήλθε.</span>";
             box.style.borderColor = "#ff4b4b";
         }} else {{
             const hours = Math.floor(remainingTime / 3600);
@@ -236,18 +245,17 @@ if "gift" in query_params:
     updateClock();
     </script>
     """
-    st.components.v1.html(live_clock_html, height=120)
+    st.components.v1.html(live_clock_html, height=105)
     st.warning("🔒 Η προσπάθεια κλείδωσε για αυτή τη συσκευή. Ισχύει μια εξαργύρωση ανά κάρτα.")
 
 else:
     # 2. INITIAL STATE - DATA CAPTURE (Lead Gate)
-    st.markdown("<p style='text-align:center; font-size:15px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.3);'>ΕΙΣΑΓΕΤΕ ΤΑ ΣΤΟΙΧΕΙΑ ΣΑΣ ΓΙΑ ΝΑ ΠΑΙΞΕΤΕ</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center; font-size:14px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.3); margin-bottom:5px;'>ΕΙΣΑΓΕΤΕ ΤΑ ΣΤΟΙΧΕΙΑ ΣΑΣ ΓΙΑ ΝΑ ΠΑΙΞΕΤΕ</p>", unsafe_allow_html=True)
     input_name = st.text_input("Όνομα ή Instagram Profile:", value="", placeholder="@username")
     st.write("---")
     
     if input_name.strip() != "":
-        st.markdown("<p style='color:#ffffff; text-align:center; font-weight: bold; text-shadow: 0 1px 4px rgba(0,0,0,0.3);'>✓ Η ΣΥΝΔΕΣΗ ΕΝΕΡΓΟΠΟΙΗΘΗΚΕ // ΠΑΤΗΣΤΕ ΤΟ ΚΟΥΜΠΙ</p>", unsafe_allow_html=True)
-        st.write("")
+        st.markdown("<p style='color:#ffffff; text-align:center; font-weight: bold; text-shadow: 0 1px 4px rgba(0,0,0,0.3); margin-bottom:5px;'>✓ Η ΣΥΝΔΕΣΗ ΕΝΕΡΓΟΠΟΙΗΘΗΚΕ // ΠΑΤΗΣΤΕ ΤΟ ΚΟΥΜΠΙ</p>", unsafe_allow_html=True)
         
         if st.button('ΔΙΕΚΔΙΚΗΣΗ ΔΩΡΟΥ'):
             with st.spinner('Γίνεται κλήρωση του reward σας...'):
@@ -271,7 +279,6 @@ else:
                 except:
                     pass 
 
-                # Κλειδώνουμε το URL
                 st.query_params["gift"] = final_reward
                 st.query_params["t"] = current_ts
                 st.query_params["user"] = input_name.strip()
