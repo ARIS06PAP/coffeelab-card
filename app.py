@@ -1,3 +1,8 @@
+# ======================================================
+# COFFEELAB PROJECT - COMPLETE PRODUCTION READY
+# Features: Lead Capture, Rarity Weights, Live Clock, Google Sheets DB
+# ======================================================
+
 import streamlit as st
 import random
 import time
@@ -7,6 +12,7 @@ import zoneinfo
 # --- CONFIG ---
 st.set_page_config(page_title="CoffeeLab x Aris", page_icon="☕")
 
+# Clean & Dark Cyberpunk Look
 st.markdown("""
     <style>
     .stApp { background-color: #050505; }
@@ -23,21 +29,24 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.title("⚡ System Access Granted (Debug Mode)")
+st.title("⚡ System Access Granted")
 st.subheader("CoffeeLab x Aris Project")
 st.write("---")
 
+# 1. LIST OF REWARDS & WEIGHTS (Rarity Protocol)
 rewards = [
-    "🎁 1+1 Καφές (Optimization Protocol)",
-    "🎁 -20% στην επόμενη παραγγελία",
-    "🎁 Δωρεάν Snack / Cookie",
-    "🎁 Upgrade σε Large μέγεθος",
-    "🎁 Free Extra Shot (Energy Boost)"
+    "🎁 1+1 Καφές (Optimization Protocol)", # 5% πιθανότητα
+    "🎁 -20% στην επόμενη παραγγελία",         # 15% πιθανότητα
+    "🎁 Δωρεάν Snack / Cookie",              # 15% πιθανότητα
+    "🎁 Upgrade σε Large μέγεθος",            # 32.5% πιθανότητα
+    "🎁 Free Extra Shot (Energy Boost)"       # 32.5% πιθανότητα
 ]
 reward_weights = [5, 15, 15, 32.5, 32.5]
 
+# Διαβάζουμε τα Query Params από το URL
 query_params = st.query_params
 
+# 2. CHECK STATUS (Αν ο χρήστης έχει ήδη κλειδωμένο δώρο)
 if "gift" in query_params:
     saved_gift = query_params["gift"]
     user_name = query_params.get("user", "Agent")
@@ -46,7 +55,9 @@ if "gift" in query_params:
     st.balloons()
     st.success(f"TARGET ACQUIRED: {user_name} -> {saved_gift}")
     st.write("---")
-    
+    st.info("Δείξε αυτή την οθόνη ζωντανά στον Δημήτρη ή στο ταμείο για το redeem.")
+
+    # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS (No Cross-Origin Issues)
     live_clock_html = f"""
     <div id="countdown-box" style="
         font-family: monospace;
@@ -65,14 +76,19 @@ if "gift" in query_params:
 
     <script>
     const startTimestamp = parseInt("{start_ts}");
+    
     function updateClock() {{
         const now = new Date();
         const currentTimestamp = Math.floor(Date.now() / 1000);
+        
         const timeStr = now.toLocaleTimeString('el-GR', {{ hour12: false }});
         const dateStr = now.toLocaleDateString('el-GR');
+        
         const elapsedTime = currentTimestamp - startTimestamp;
-        const remainingTime = 86400 - elapsedTime;
+        const remainingTime = 86400 - elapsedTime; // 24 ώρες αντίστροφη μέτρηση
+        
         const box = document.getElementById("countdown-box");
+        
         if (remainingTime <= 0) {{
             box.innerHTML = "❌ ΤΟ ΚΟΥΠΟΝΙ ΕΛΗΞΕ!<br><span style='font-size:14px; color:gray;'>🔒 Το χρονικό όριο των 24 ωρών παρήλθε.</span>";
             box.style.borderColor = "gray";
@@ -81,10 +97,16 @@ if "gift" in query_params:
             const hours = Math.floor(remainingTime / 3600);
             const minutes = Math.floor((remainingTime % 3600) / 60);
             const seconds = remainingTime % 60;
-            const timerStr = (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+            
+            const timerStr = 
+                (hours < 10 ? "0" : "") + hours + ":" + 
+                (minutes < 10 ? "0" : "") + minutes + ":" + 
+                (seconds < 10 ? "0" : "") + seconds;
+            
             box.innerHTML = "📅 " + dateStr + " — ⏰ " + timeStr + "<br><span style='color:#00ff41;'>⏳ ΛΗΞΗ ΣΕ: " + timerStr + "</span>";
         }}
     }}
+
     setInterval(updateClock, 1000);
     updateClock();
     </script>
@@ -93,6 +115,7 @@ if "gift" in query_params:
     st.warning("🔒 Το σύστημα κλείδωσε. Δεν επιτρέπονται επιπλέον προσπάθειες.")
 
 else:
+    # 3. INITIAL STATE - DATA CAPTURE
     st.markdown("**User Verification Required.**")
     input_name = st.text_input("Πληκτρολόγησε το Όνομα ή το Instagram σου για να ξεκλειδώσεις το reward:", "")
     st.write("---")
@@ -103,12 +126,14 @@ else:
         if st.button('GENERATE REWARD'):
             with st.spinner('Securing Connection & Generating Reward...'):
                 
+                # Επιλογή δώρου βάσει Rarity Weights
                 final_reward = random.choices(rewards, weights=reward_weights, k=1)[0]
                 current_ts = str(int(time.time()))
                 
-                # Απευθείας εκτέλεση χωρίς try/except για να δούμε το error
+                # 📊 GOOGLE SHEETS DATA PUSH
                 conn = st.connection("gsheets", type=st.ServiceConnection)
                 
+                # Ώρα Ελλάδας
                 tz = zoneinfo.ZoneInfo("Europe/Athens")
                 now_gr = datetime.now(tz)
                 date_str = now_gr.strftime("%d/%m/%Y")
@@ -121,8 +146,10 @@ else:
                     "Reward": final_reward
                 }
                 
+                # Εγγραφή στο Sheet
                 conn.create(data=[new_row])
 
+                # Κλείδωμα στα Query Params για Anti-Cheat
                 st.query_params["gift"] = final_reward
                 st.query_params["t"] = current_ts
                 st.query_params["user"] = input_name.strip()
