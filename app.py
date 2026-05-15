@@ -14,7 +14,7 @@ import requests
 st.set_page_config(page_title="CoffeeLab x Aris", page_icon="☕")
 
 # 🚨 ΒΑΛΕ ΕΔΩ ΤΟ URL ΠΟΥ ΕΚΑΝΕΣ COPY ΑΠΟ ΤΟ GOOGLE APPS SCRIPT
-SCRIPT_URL = "https://docs.google.com/spreadsheets/d/1YVXYNAmITQrGrmRvQ8a1ef4-F6dQZPjp8-PAr4wbyk4/edit?usp=sharing" 
+SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2qkoK1xDY9uZnRWXso3yjAbK-iV5KOW2IcSyaEPrQlEItfWkPZjQr_elQA2Fz3ZDNwg/exec" 
 
 # Clean & Dark Cyberpunk Look
 st.markdown("""
