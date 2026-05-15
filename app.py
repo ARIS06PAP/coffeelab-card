@@ -1,5 +1,5 @@
 # ======================================================
-# COFFEELAB PROJECT - MAXIMUM MOBILE OPTIMIZED
+# COFFEELAB PROJECT - MAXIMUM MOBILE OPTIMIZED (CENTERED LOGO)
 # Features: Viewport Lock, No-Scroll UI, Lead Gate, Rarity Weights, Live 24h Clock
 # ======================================================
 
@@ -47,17 +47,23 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    /* Mobile-Perfect Logo Sizing */
+    /* Απόλυτο Κεντράρισμα του Logo για Mobile */
+    [data-testid="stImage"] {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        width: 120px !important;
+    }
+    
     .mobile-logo-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
         margin-top: 5px;
         margin-bottom: 5px;
-    }
-    .mobile-logo-wrapper img {
-        max-height: 75px !important; /* Κλειδωμένο ύψος για να μην σπρώχνει την οθόνη */
-        width: auto !important;
     }
     
     /* Mobile Optimized Titles */
@@ -70,7 +76,7 @@ st.markdown("""
         text-align: center;
         margin-top: 0px;
         margin-bottom: 2px;
-        font-size: 24px !important; /* Ιδανικό για iPhone/Android screens */
+        font-size: 24px !important;
         text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
     }
     
@@ -89,7 +95,7 @@ st.markdown("""
         background-color: rgba(15, 15, 15, 0.9) !important;
         border: 2px solid #ffffff !important;
         border-radius: 8px !important;
-        height: 48px !important; /* Ιδανικό ύψος για mobile tapping */
+        height: 48px !important;
     }
     
     input {
@@ -109,7 +115,7 @@ st.markdown("""
     /* Thumb-Friendly Big Button */
     .stButton>button {
         width: 100%;
-        height: 52px !important; /* Μεγάλο target area για τον αντίχειρα */
+        height: 52px !important;
         background-color: #0f0f0f !important; 
         color: #ffffff !important;
         font-family: 'Montserrat', sans-serif !important;
@@ -154,7 +160,6 @@ st.markdown("""
         letter-spacing: 1px;
     }
     
-    /* Μάζεμα των default κενών των ειδοποιήσεων */
     .stAlert {
         padding: 8px !important;
         font-size: 12px !important;
@@ -168,11 +173,11 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- LOCAL LOGO LOAD (MOBILE OPTIMIZED WRAPPER) ---
+# --- LOCAL LOGO LOAD (CENTERED VIA CSS MAP) ---
 try:
     image = Image.open('logolab.png')
     st.markdown('<div class="mobile-logo-wrapper">', unsafe_allow_html=True)
-    st.image(image, width=120) # Ελεγχόμενο πλάτος
+    st.image(image, width=120)
     st.markdown('</div>', unsafe_allow_html=True)
 except:
     st.markdown("""
@@ -218,7 +223,7 @@ if "gift" in query_params:
     st.info("ℹ️ Δείξε την οθόνη στο ταμείο και παράδωσε τη φυσική κάρτα.")
     st.write("---")
 
-    # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS (COMPACT)
+    # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS
     live_clock_html = f"""
     <div id="countdown-box" style="
         font-family: 'Share Tech Mono', monospace;
