@@ -1,5 +1,5 @@
 # ======================================================
-# COFFEELAB PROJECT - LOCAL LOGO PRODUCTION READY
+# COFFEELAB PROJECT - OFFICIAL CYAN BRANDING EDITION
 # Features: Lead Gate, Rarity Weights, Live 24h Clock, HTTP Push DB
 # ======================================================
 
@@ -15,128 +15,134 @@ from PIL import Image # Χρειάζεται για να διαβάσει το �
 st.set_page_config(page_title="Coffee Lab Reward Protocol", page_icon="☕", layout="centered")
 
 # 🚨 PRODUCTION GOOGLE APPS SCRIPT URL LOCKED
-SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2qkoK1xDY9uZnRWXso3yjAbK-iV5KOW2IcSyaEPrQlEItfWkPZjQr_elQA2Fz3ZDNwg/exec" 
+SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2qkoK1xDY9uZnRWXso3yjAbK-iV5KOW2IcSyaEPrQlEItfWkPZjQr_elQA2Fz3ZDNwg/exec"
 
-# --- OFFICIAL COFFEE LAB BRANDING (CSS INJECT) ---
+# --- OFFICIAL COFFEE LAB CYAN BRANDING (CSS INJECT) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Share+Tech+Mono&display=swap');
     
-    /* Coffee Lab Dark Palette Background */
+    /* Coffee Lab Official Cyan/Light Blue Background */
     .stApp { 
-        background: linear-gradient(180deg, #0e0e0e 0%, #171717 100%);
+        background: linear-gradient(180deg, #00b4d8 0%, #0077b6 100%);
     }
     
+    /* Όλα τα κείμενα γίνονται λευκά ή σκούρα ανάλογα με την αντίθεση */
     h1, h2, h3, p, span, label {
         font-family: 'Montserrat', sans-serif !important;
         color: #ffffff !important;
     }
     
-    /* Coffee Lab Official Yellow/Amber */
+    /* Τίτλος με έντονο λευκό contrast πάνω στο γαλάζιο background */
     .brand-title {
         font-family: 'Impact', 'Montserrat', sans-serif !important;
         font-weight: 900 !important;
-        color: #ffb800 !important;
+        color: #ffffff !important;
         text-transform: uppercase;
         letter-spacing: 2px;
         text-align: center;
         margin-top: 20px;
         margin-bottom: 5px;
         font-size: 32px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
     
     .brand-subtitle {
         text-align: center;
         font-family: 'Share Tech Mono', monospace !important;
-        color: #aaaaaa !important;
+        color: #f1f1f1 !important;
         font-size: 13px;
         letter-spacing: 2px;
         margin-bottom: 30px;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
     }
 
-    /* Input Box styling */
+    /* Input Box με premium dark look για να κάνει contrast στο γαλάζιο */
     div['data-baseweb']="input" {
-        background-color: #1a1a1a !important;
-        border: 1px solid #333333 !important;
-        border-radius: 6px !important;
+        background-color: rgba(15, 15, 15, 0.85) !important;
+        border: 2px solid #ffffff !important;
+        border-radius: 8px !important;
     }
     
     input {
-        color: #ffb800 !important;
+        color: #00b4d8 !important; /* Τα γράμματα μέσα στο input παίρνουν το γαλάζιο */
         font-family: 'Montserrat', sans-serif !important;
         font-weight: bold !important;
     }
+    
+    /* Μικρό label πάνω από το input */
+    .stTextInput label p {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
 
-    /* Coffee Lab Premium Yellow Button */
+    /* Coffee Lab Premium Σκούρο/Μαύρο Κουμπί για απόλυτο contrast με το γαλάζιο */
     .stButton>button {
         width: 100%;
         height: 3.8em;
-        background-color: #ffb800 !important; 
-        color: #000000 !important;
+        background-color: #0f0f0f !important; 
+        color: #ffffff !important;
         font-family: 'Montserrat', sans-serif !important;
         font-weight: 900 !important;
-        border: none !important;
-        border-radius: 6px !important;
+        border: 2px solid #ffffff !important;
+        border-radius: 8px !important;
         text-transform: uppercase;
         letter-spacing: 1px;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(255, 184, 0, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     
     .stButton>button:hover {
-        background-color: #ffa800 !important;
-        color: #000000 !important;
-        box-shadow: 0 0 25px rgba(255, 184, 0, 0.5) !important;
+        background-color: #ffffff !important;
+        color: #0077b6 !important; /* Στο hover γίνεται λευκό με γαλάζια γράμματα */
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.6) !important;
         transform: translateY(-1px);
+        border: 2px solid #ffffff !important;
     }
     
     .stButton>button:disabled {
-        background-color: #222222 !important;
-        color: #555555 !important;
-        border: 1px solid #333333 !important;
+        background-color: rgba(15, 15, 15, 0.5) !important;
+        color: #666666 !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
         box-shadow: none !important;
         transform: none !important;
     }
 
-    /* Target Acquired Box - Brand Style */
+    /* Target Acquired Box - Brand Style με λευκό border */
     .success-box {
-        background: rgba(255, 184, 0, 0.03);
-        border: 2px solid #ffb800;
+        background: rgba(15, 15, 15, 0.85);
+        border: 2px solid #ffffff;
         border-radius: 8px;
         padding: 25px;
         text-align: center;
         margin-bottom: 25px;
-        box-shadow: 0 0 20px rgba(255, 184, 0, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     }
     
     .success-title {
-        color: #ffb800 !important;
+        color: #00b4d8 !important; /* Ο τίτλος επιτυχίας παίρνει το brand γαλάζιο */
         font-family: 'Impact', sans-serif !important;
         font-size: 26px;
         letter-spacing: 1px;
     }
     
     hr {
-        border-color: #262626 !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # --- LOCAL LOGO LOAD ---
 try:
-    # Διαβάζει το αρχείο logo.png από το GitHub repo σου
     image = Image.open('logolab.png')
-    
-    # Το κεντράρουμε χρησιμοποιώντας 3 στήλες (το βάζουμε στη μεσαία)
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.image(image, use_container_width=True)
 except:
-    # Fail-safe: Αν ξεχάσεις να ανεβάσεις τη φωτογραφία, δείχνει Text-Logo για να μην κρασάρει το app
     st.markdown("""
         <div style="display:flex; justify-content:center; align-items:center; flex-direction: column; margin-top:25px; margin-bottom:10px;">
             <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #ffffff; line-height: 0.9;">COFFEE</span>
-            <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #ffb800; letter-spacing: 3px;">LAB</span>
+            <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #0f0f0f; letter-spacing: 3px;">LAB</span>
         </div>
     """, unsafe_allow_html=True)
 
@@ -163,13 +169,13 @@ if "gift" in query_params:
 
     st.balloons()
     
-    # Brand Styled Success Box
+    # Brand Styled Success Box (Σκούρο φόντο με λευκό border για μέγιστο contrast)
     st.markdown(f"""
         <div class="success-box">
             <div class="success-title">🎯 ΚΕΡΔΙΣΕΣ!</div>
-            <p style='font-size: 16px; margin-top: 10px; color: #888888;'>Instagram ID: <span style='color:#ffffff; font-weight:bold;'>{user_name}</span></p>
-            <div style='background-color: #111111; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #222222;'>
-                <p style='font-size: 20px; font-weight: 900; color: #ffb800; margin: 0;'>{saved_gift}</p>
+            <p style='font-size: 16px; margin-top: 10px; color: #aaaaaa;'>Instagram ID: <span style='color:#ffffff; font-weight:bold;'>{user_name}</span></p>
+            <div style='background-color: #0077b6; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #ffffff;'>
+                <p style='font-size: 20px; font-weight: 900; color: #ffffff; margin: 0;'>{saved_gift}</p>
             </div>
         </div>
     """, unsafe_allow_html=True)
@@ -185,10 +191,10 @@ if "gift" in query_params:
         font-weight: bold;
         color: #ff4b4b;
         text-align: center;
-        background-color: #141414;
+        background-color: #0f0f0f;
         padding: 15px;
-        border-radius: 6px;
-        border: 1px solid #222222;
+        border-radius: 8px;
+        border: 2px solid #ff4b4b;
         margin-bottom: 15px;
     ">
         Initializing Real-Time Clock...
@@ -222,7 +228,7 @@ if "gift" in query_params:
                 (minutes < 10 ? "0" : "") + minutes + ":" + 
                 (seconds < 10 ? "0" : "") + seconds;
             
-            box.innerHTML = "📅 " + dateStr + " — ⏰ " + timeStr + "<br><span style='color:#ffb800;'>⏳ ΛΗΞΗ ΚΟΥΠΟΝΙΟΥ ΣΕ: " + timerStr + "</span>";
+            box.innerHTML = "📅 " + dateStr + " — ⏰ " + timeStr + "<br><span style='color:#00b4d8;'>⏳ ΛΗΞΗ ΚΟΥΠΟΝΙΟΥ ΣΕ: " + timerStr + "</span>";
         }}
     }}
 
@@ -235,12 +241,12 @@ if "gift" in query_params:
 
 else:
     # 2. INITIAL STATE - DATA CAPTURE (Lead Gate)
-    st.markdown("<p style='text-align:center; font-size:15px; font-weight: bold; color: #aaaaaa;'>ΕΙΣΑΓΕΤΕ ΤΑ ΣΤΟΙΧΕΙΑ ΣΑΣ ΓΙΑ ΝΑ ΠΑΙΞΕΤΕ</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center; font-size:15px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.3);'>ΕΙΣΑΓΕΤΕ ΤΑ ΣΤΟΙΧΕΙΑ ΣΑΣ ΓΙΑ ΝΑ ΠΑΙΞΕΤΕ</p>", unsafe_allow_html=True)
     input_name = st.text_input("Όνομα ή Instagram Profile:", value="", placeholder="@username")
     st.write("---")
     
     if input_name.strip() != "":
-        st.markdown("<p style='color:#ffb800; text-align:center; font-weight: bold;'>✓ Η ΣΥΝΔΕΣΗ ΕΝΕΡΓΟΠΟΙΗΘΗΚΕ // ΠΑΤΗΣΤΕ ΤΟ ΚΟΥΜΠΙ</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#ffffff; text-align:center; font-weight: bold; text-shadow: 0 1px 4px rgba(0,0,0,0.3);'>✓ Η ΣΥΝΔΕΣΗ ΕΝΕΡΓΟΠΟΙΗΘΗΚΕ // ΠΑΤΗΣΤΕ ΤΟ ΚΟΥΜΠΙ</p>", unsafe_allow_html=True)
         st.write("")
         
         if st.button('ΔΙΕΚΔΙΚΗΣΗ ΔΩΡΟΥ'):
