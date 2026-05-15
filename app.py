@@ -217,8 +217,8 @@ except:
     """, unsafe_allow_html=True)
 
 # --- HEADERS ---
-st.markdown('<h1 class="brand-title">LUCKY REWARD PROTOCOL</h1>', unsafe_allow_html=True)
-st.markdown('<p class="brand-subtitle">SCAN & WIN // OFFICIAL COFFEE LAB HANDOUT</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="brand-title">ΟΛΟΚΛΗΡΩΣΕΣ ΤΗΝ ΑΠΟΣΤΟΛΗ!</h1>', unsafe_allow_html=True)
+st.markdown('<p class="brand-subtitle">SCAN & WIN // COFFEE LAB ILIOYPOLI HANDOUT</p>', unsafe_allow_html=True)
 
 rewards = [
     "🎁 1+1 Καφές (Optimization Protocol)",
