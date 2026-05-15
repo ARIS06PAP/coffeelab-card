@@ -1,5 +1,5 @@
 # ======================================================
-# COFFEELAB PROJECT - GOOGLE SHEETS AUTOMATION
+# COFFEELAB PROJECT - COMPLETE PRODUCTION READY
 # Features: Lead Capture, Rarity Weights, Live Clock, Google Sheets DB
 # ======================================================
 
@@ -8,11 +8,12 @@ import random
 import time
 from datetime import datetime
 import zoneinfo
+import pandas as pd
 
 # --- CONFIG ---
 st.set_page_config(page_title="CoffeeLab x Aris", page_icon="☕")
 
-# Clean & Dark Look
+# Clean & Dark Cyberpunk Look
 st.markdown("""
     <style>
     .stApp { background-color: #050505; }
@@ -130,30 +131,31 @@ else:
                 final_reward = random.choices(rewards, weights=reward_weights, k=1)[0]
                 current_ts = str(int(time.time()))
                 
-                # 📊 GOOGLE SHEETS BACKGROUND PUSH
-                try:
-                    # Σύνδεση με το Google Sheet μέσω των Streamlit Secrets
-                    conn = st.connection("gsheets", type=st.ServiceConnection)
-                    
-                    # Παίρνουμε την ακριβή ώρα Ελλάδας για το logging
-                    tz = zoneinfo.ZoneInfo("Europe/Athens")
-                    now_gr = datetime.now(tz)
-                    date_str = now_gr.strftime("%d/%m/%Y")
-                    time_str = now_gr.strftime("%H:%M:%S")
-                    
-                    # Δημιουργία της νέας γραμμής δεδομένων
-                    new_row = {
-                        "Date": date_str,
-                        "Time": time_str,
-                        "User": input_name.strip(),
-                        "Reward": final_reward
-                    }
-                    
-                    # Append στο Google Sheet
-                    conn.create(data=[new_row])
-                except Exception as e:
-                    # Fail-safe: Αν κολλήσει το Google API, το app συνεχίζει κανονικά για να μην χάσει ο πελάτης το δώρο
-                    pass
+                # 📊 GOOGLE SHEETS BACKGROUND PUSH (DataFrame Method)
+                conn = st.connection("gsheets", type="gsheets")
+                
+                # Διαβάζουμε τα υπάρχοντα δεδομένα (ή άδειο αν είναι η πρώτη φορά)
+                df = conn.read()
+                
+                # Παίρνουμε την ακριβή ώρα Ελλάδας για το logging
+                tz = zoneinfo.ZoneInfo("Europe/Athens")
+                now_gr = datetime.now(tz)
+                date_str = now_gr.strftime("%d/%m/%Y")
+                time_str = now_gr.strftime("%H:%M:%S")
+                
+                # Δημιουργία της νέας γραμμής
+                new_row = pd.DataFrame([{
+                    "Date": date_str,
+                    "Time": time_str,
+                    "User": input_name.strip(),
+                    "Reward": final_reward
+                }])
+                
+                # Ενοποίηση παλιών και νέων δεδομένων
+                updated_df = pd.concat([df, new_row], ignore_index=True)
+                
+                # Ανέβασμα του ενημερωμένου DataFrame πίσω στο Google Sheet
+                conn.update(data=updated_df)
 
                 # Κλειδώνουμε το URL
                 st.query_params["gift"] = final_reward
@@ -161,5 +163,3 @@ else:
                 st.query_params["user"] = input_name.strip()
                 
                 st.rerun()
-    else:
-        st.button('GENERATE REWARD (ΠΑΡΑΚΑΛΩ ΕΙΣΑΓΕΤΕ ΟΝΟΜΑ)', disabled=True)
