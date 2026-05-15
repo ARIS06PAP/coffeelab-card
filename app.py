@@ -1,16 +1,12 @@
-# ======================================================
-# COFFEELAB PROJECT - ENTERPRISE EDITION
-# Features: Lead Capture, Rarity Weights, Anti-Cheat URL, Live Clock
-# ======================================================
-
 import streamlit as st
 import random
 import time
+from datetime import datetime
+import zoneinfo
 
 # --- CONFIG ---
 st.set_page_config(page_title="CoffeeLab x Aris", page_icon="☕")
 
-# Clean & Dark Look
 st.markdown("""
     <style>
     .stApp { background-color: #050505; }
@@ -27,39 +23,30 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.title("⚡ System Access Granted")
+st.title("⚡ System Access Granted (Debug Mode)")
 st.subheader("CoffeeLab x Aris Project")
 st.write("---")
 
-# 1. LIST OF REWARDS & WEIGHTS (Rarity Protocol)
 rewards = [
-    "🎁 1+1 Καφές (Optimization Protocol)", # Legendary
-    "🎁 -20% στην επόμενη παραγγελία",         # Rare
-    "🎁 Δωρεάν Snack / Cookie",              # Rare
-    "🎁 Upgrade σε Large μέγεθος",            # Common
-    "🎁 Free Extra Shot (Energy Boost)"       # Common
+    "🎁 1+1 Καφές (Optimization Protocol)",
+    "🎁 -20% στην επόμενη παραγγελία",
+    "🎁 Δωρεάν Snack / Cookie",
+    "🎁 Upgrade σε Large μέγεθος",
+    "🎁 Free Extra Shot (Energy Boost)"
 ]
-
-# Πιθανότητες για κάθε δώρο αντίστοιχα (Σύνολο = 100)
-# 5% για το 1+1, 15% για το καθένα από τα μεσαία, 32.5% για τα μικρά
 reward_weights = [5, 15, 15, 32.5, 32.5]
 
-# Διαβάζουμε τα Query Params από το URL
 query_params = st.query_params
 
-# 2. CHECK STATUS (Αν ο χρήστης έχει ήδη παίξει)
 if "gift" in query_params:
     saved_gift = query_params["gift"]
-    user_name = query_params.get("user", "Agent") # Παίρνει το όνομα από το URL
+    user_name = query_params.get("user", "Agent")
     start_ts = query_params["t"]
 
     st.balloons()
-    # Εξατομικευμένο μήνυμα επιτυχίας με το όνομα του πελάτη
     st.success(f"TARGET ACQUIRED: {user_name} -> {saved_gift}")
     st.write("---")
-    st.info("Δείξε αυτή την οθόνη ζωντανά στον Δημήτρη ή στο ταμείο για το redeem.")
-
-    # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS
+    
     live_clock_html = f"""
     <div id="countdown-box" style="
         font-family: monospace;
@@ -78,19 +65,14 @@ if "gift" in query_params:
 
     <script>
     const startTimestamp = parseInt("{start_ts}");
-    
     function updateClock() {{
         const now = new Date();
         const currentTimestamp = Math.floor(Date.now() / 1000);
-        
         const timeStr = now.toLocaleTimeString('el-GR', {{ hour12: false }});
         const dateStr = now.toLocaleDateString('el-GR');
-        
         const elapsedTime = currentTimestamp - startTimestamp;
         const remainingTime = 86400 - elapsedTime;
-        
         const box = document.getElementById("countdown-box");
-        
         if (remainingTime <= 0) {{
             box.innerHTML = "❌ ΤΟ ΚΟΥΠΟΝΙ ΕΛΗΞΕ!<br><span style='font-size:14px; color:gray;'>🔒 Το χρονικό όριο των 24 ωρών παρήλθε.</span>";
             box.style.borderColor = "gray";
@@ -99,16 +81,10 @@ if "gift" in query_params:
             const hours = Math.floor(remainingTime / 3600);
             const minutes = Math.floor((remainingTime % 3600) / 60);
             const seconds = remainingTime % 60;
-            
-            const timerStr = 
-                (hours < 10 ? "0" : "") + hours + ":" + 
-                (minutes < 10 ? "0" : "") + minutes + ":" + 
-                (seconds < 10 ? "0" : "") + seconds;
-            
+            const timerStr = (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
             box.innerHTML = "📅 " + dateStr + " — ⏰ " + timeStr + "<br><span style='color:#00ff41;'>⏳ ΛΗΞΗ ΣΕ: " + timerStr + "</span>";
         }}
     }}
-
     setInterval(updateClock, 1000);
     updateClock();
     </script>
@@ -117,33 +93,40 @@ if "gift" in query_params:
     st.warning("🔒 Το σύστημα κλείδωσε. Δεν επιτρέπονται επιπλέον προσπάθειες.")
 
 else:
-    # 3. INITIAL STATE - DATA CAPTURE
     st.markdown("**User Verification Required.**")
-    
-    # Input πεδίο για το όνομα/Instagram
-    input_name = st.text_input("Πληκτρολόγησε το Όνομα ή το Instagram σου για να ξεκλειδώσεις το reward:", "" )
-    
+    input_name = st.text_input("Πληκτρολόγησε το Όνομα ή το Instagram σου για να ξεκλειδώσεις το reward:", "")
     st.write("---")
     
-    # Το κουμπί ενεργοποιείται ΜΟΝΟ αν ο χρήστης έχει γράψει τουλάχιστον 2 χαρακτήρες
     if input_name.strip() != "":
         st.markdown("✅ *Στοιχεία έγκυρα. Το σύστημα είναι έτοιμο.*")
         
         if st.button('GENERATE REWARD'):
-            with st.spinner('Accessing Database...'):
-                time.sleep(0.8)
+            with st.spinner('Securing Connection & Generating Reward...'):
                 
-                # Χρήση random.choices με weights για το Rarity Protocol
-                # Το [0] χρειάζεται γιατί η choices επιστρέφει λίστα
                 final_reward = random.choices(rewards, weights=reward_weights, k=1)[0]
                 current_ts = str(int(time.time()))
                 
-                # Κλειδώνουμε το δώρο, το timestamp ΚΑΙ το όνομα του χρήστη στο URL
+                # Απευθείας εκτέλεση χωρίς try/except για να δούμε το error
+                conn = st.connection("gsheets", type=st.ServiceConnection)
+                
+                tz = zoneinfo.ZoneInfo("Europe/Athens")
+                now_gr = datetime.now(tz)
+                date_str = now_gr.strftime("%d/%m/%Y")
+                time_str = now_gr.strftime("%H:%M:%S")
+                
+                new_row = {
+                    "Date": date_str,
+                    "Time": time_str,
+                    "User": input_name.strip(),
+                    "Reward": final_reward
+                }
+                
+                conn.create(data=[new_row])
+
                 st.query_params["gift"] = final_reward
                 st.query_params["t"] = current_ts
                 st.query_params["user"] = input_name.strip()
                 
                 st.rerun()
     else:
-        # Αν το input είναι άδειο, το κουμπί είναι κλειδωμένο (disabled) για προστασία
         st.button('GENERATE REWARD (ΠΑΡΑΚΑΛΩ ΕΙΣΑΓΕΤΕ ΟΝΟΜΑ)', disabled=True)
