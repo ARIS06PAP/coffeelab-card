@@ -338,8 +338,8 @@ if "gift" in query_params:
 
 else:
     # 2. INITIAL STATE - DATA CAPTURE (Lead Gate)
-    st.markdown("<p style='text-align:center; font-size:14px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.3); margin-bottom:4px;'>ΕΙΣΑΓΕΤΕ ΤΑ ΣΤΟΙΧΕΙΑ ΣΑΣ ΓΙΑ ΝΑ ΠΑΙΞΕΤΕ</p>", unsafe_allow_html=True)
-    input_name = st.text_input("Όνομα ή ID:", value="", placeholder="@username")
+  
+    input_name = st.text_input("Όνομα ή Instagram ID:", value="", placeholder="@username")
     st.write("---")
     
     if input_name.strip() != "":
