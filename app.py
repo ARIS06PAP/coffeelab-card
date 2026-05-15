@@ -1,6 +1,6 @@
 # ======================================================
-# COFFEELAB PROJECT - MAXIMUM MOBILE OPTIMIZED (CENTERED LOGO)
-# Features: Viewport Lock, No-Scroll UI, Lead Gate, Rarity Weights, Live 24h Clock
+# COFFEELAB PROJECT - THE DEFINITIVE MOBILE ENGINE (100% CENTERED)
+# Features: Global CSS Reset, Force Center Layout, Lead Gate, Rarity Weights
 # ======================================================
 
 import streamlit as st
@@ -17,105 +17,117 @@ st.set_page_config(page_title="Coffee Lab Rewards", page_icon="☕", layout="cen
 # 🚨 PRODUCTION GOOGLE APPS SCRIPT URL LOCKED
 SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2qkoK1xDY9uZnRWXso3yjAbK-iV5KOW2IcSyaEPrQlEItfWkPZjQr_elQA2Fz3ZDNwg/exec"
 
-# --- 100% MOBILE SCREEN OPTIMIZATION (CSS INJECT) ---
+# --- THE ULTIMATE GLOBAL MOBILE RESET & CENTER (CSS INJECT) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Share+Tech+Mono&display=swap');
     
-    /* Mobile Viewport Reset - Σφίξιμο όλου του container */
-    .block-container {
-        padding-top: 0.5rem !important;
-        padding-bottom: 0.5rem !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        max-width: 100% !important;
-    }
-    
-    /* Εξαφανίζει τα default Streamlit headers/footers για να κερδίσουμε ύψος */
+    /* 1. Global Reset & Streamlit Native Element Override */
     [data-testid="stHeader"], footer {
         display: none !important;
     }
     
-    /* Coffee Lab Official Cyan Gradient */
-    .stApp { 
-        background: linear-gradient(180deg, #00b4d8 0%, #0077b6 100%);
-        overflow: hidden !important; /* Απαγορεύει το περίεργο scroll στο κινητό */
+    .block-container {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+        padding-left: 1.2rem !important;
+        padding-right: 1.2rem !important;
+        max-width: 450px !important; /* Ιδανικό πλάτος για να "σφίξει" σε mobile view */
+        margin: 0 auto !important;
     }
     
+    /* Coffee Lab Official Cyan Background */
+    .stApp { 
+        background: linear-gradient(180deg, #00b4d8 0%, #0077b6 100%);
+    }
+    
+    /* 2. FORCE ABSOLUTE CENTER ON EVERYTHING */
+    .element-container, .stVerticalBlock, [data-testid="stVerticalBlock"] {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+    
+    /* Εξουδετέρωση του αριστερού alignment της εικόνας από το Streamlit */
+    [data-testid="stImage"], [data-testid="stImage"] img {
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
+        width: 140px !important; /* Ελαφρώς μεγαλύτερο και καθαρό */
+    }
+    
+    /* 3. TYPOGRAPHY & SCALING UPTICK (Λίγο πιο μεγάλα και bold) */
     h1, h2, h3, p, span, label {
         font-family: 'Montserrat', sans-serif !important;
         color: #ffffff !important;
+        text-align: center !important;
     }
     
-    /* Απόλυτο Κεντράρισμα του Logo για Mobile */
-    [data-testid="stImage"] {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        width: 120px !important;
-    }
-    
-    .mobile-logo-wrapper {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        width: 100% !important;
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-    
-    /* Mobile Optimized Titles */
     .brand-title {
         font-family: 'Impact', 'Montserrat', sans-serif !important;
         font-weight: 900 !important;
         color: #ffffff !important;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        text-align: center;
-        margin-top: 0px;
-        margin-bottom: 2px;
-        font-size: 24px !important;
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        letter-spacing: 1.5px;
+        margin-top: 10px !important;
+        margin-bottom: 4px !important;
+        font-size: 28px !important; /* Μεγαλύτερος, καθαρός τίτλος */
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        width: 100% !important;
     }
     
     .brand-subtitle {
-        text-align: center;
         font-family: 'Share Tech Mono', monospace !important;
         color: #f1f1f1 !important;
-        font-size: 10px !important;
-        letter-spacing: 1px;
-        margin-bottom: 12px;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        font-size: 12px !important; /* Πιο ευανάγνωστο */
+        letter-spacing: 1.5px;
+        margin-bottom: 20px !important;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        width: 100% !important;
     }
 
-    /* Mobile Friendly Input Box */
+    /* 4. PERFECT MOBILE INPUT BOX */
     div['data-baseweb']="input" {
-        background-color: rgba(15, 15, 15, 0.9) !important;
+        background-color: rgba(15, 15, 15, 0.92) !important;
         border: 2px solid #ffffff !important;
         border-radius: 8px !important;
-        height: 48px !important;
+        height: 52px !important; /* Άνετο μέγεθος */
+        width: 100% !important;
     }
     
     input {
         color: #00b4d8 !important;
         font-family: 'Montserrat', sans-serif !important;
         font-weight: bold !important;
-        font-size: 16px !important; /* Αποτρέπει το αυτόματο Zoom-in στα iPhone */
+        font-size: 16px !important; /* Κλειδώνει το Zoom στα iPhone */
+        text-align: center !important; /* Κεντράρει και το κείμενο που γράφει ο χρήστης */
+    }
+    
+    .stTextInput {
+        width: 100% !important;
     }
     
     .stTextInput label p {
         color: #ffffff !important;
         font-weight: 700 !important;
-        font-size: 12px !important;
-        margin-bottom: 4px !important;
+        font-size: 14px !important;
+        margin-bottom: 6px !important;
+        text-align: center !important;
+        width: 100% !important;
     }
 
-    /* Thumb-Friendly Big Button */
+    /* 5. THUMB-FRIENDLY ACTION BUTTON */
+    .stButton {
+        width: 100% !important;
+    }
+    
     .stButton>button {
-        width: 100%;
-        height: 52px !important;
+        width: 100% !important;
+        height: 54px !important; /* Premium ύψος για εύκολο tap */
         background-color: #0f0f0f !important; 
         color: #ffffff !important;
         font-family: 'Montserrat', sans-serif !important;
@@ -124,10 +136,9 @@ st.markdown("""
         border-radius: 8px !important;
         text-transform: uppercase;
         letter-spacing: 1px;
-        font-size: 15px !important;
+        font-size: 16px !important; /* Πιο έντονα γράμματα */
         transition: all 0.2s ease;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        margin-top: 5px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     }
     
     .stButton>button:active {
@@ -137,53 +148,53 @@ st.markdown("""
     }
     
     .stButton>button:disabled {
-        background-color: rgba(15, 15, 15, 0.4) !important;
+        background-color: rgba(15, 15, 15, 0.5) !important;
         color: #777777 !important;
         border: 2px solid rgba(255, 255, 255, 0.2) !important;
     }
 
-    /* Mobile Compact Success Card */
+    /* 6. SUCCESS COUPON SCREEN BLOCK */
     .success-box {
-        background: rgba(15, 15, 15, 0.9);
+        background: rgba(15, 15, 15, 0.92);
         border: 2px solid #ffffff;
         border-radius: 8px;
-        padding: 15px;
+        padding: 20px;
         text-align: center;
-        margin-bottom: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        width: 100% !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     }
     
     .success-title {
         color: #00b4d8 !important;
         font-family: 'Impact', sans-serif !important;
-        font-size: 22px;
+        font-size: 26px;
         letter-spacing: 1px;
     }
     
     .stAlert {
-        padding: 8px !important;
-        font-size: 12px !important;
+        padding: 10px !important;
+        font-size: 13px !important;
+        width: 100% !important;
     }
     
     hr {
         border-color: rgba(255, 255, 255, 0.25) !important;
-        margin-top: 8px !important;
-        margin-bottom: 8px !important;
+        width: 100% !important;
+        margin-top: 12px !important;
+        margin-bottom: 12px !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- LOCAL LOGO LOAD (CENTERED VIA CSS MAP) ---
+# --- LOCAL LOGO LOAD ---
 try:
     image = Image.open('logolab.png')
-    st.markdown('<div class="mobile-logo-wrapper">', unsafe_allow_html=True)
-    st.image(image, width=120)
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.image(image)
 except:
     st.markdown("""
         <div style="display:flex; justify-content:center; align-items:center; flex-direction: column; margin-top:5px; margin-bottom:5px;">
-            <span style="font-family: 'Impact', sans-serif; font-size: 32px; font-weight: 900; color: #ffffff; line-height: 0.9;">COFFEE</span>
-            <span style="font-family: 'Impact', sans-serif; font-size: 32px; font-weight: 900; color: #0f0f0f; letter-spacing: 2px;">LAB</span>
+            <span style="font-family: 'Impact', sans-serif; font-size: 36px; font-weight: 900; color: #ffffff; line-height: 0.9;">COFFEE</span>
+            <span style="font-family: 'Impact', sans-serif; font-size: 36px; font-weight: 900; color: #0f0f0f; letter-spacing: 2px;">LAB</span>
         </div>
     """, unsafe_allow_html=True)
 
@@ -213,9 +224,9 @@ if "gift" in query_params:
     st.markdown(f"""
         <div class="success-box">
             <div class="success-title">🎯 ΚΕΡΔΙΣΕΣ!</div>
-            <p style='font-size: 14px; margin-top: 3px; color: #aaaaaa; margin-bottom: 0;'>Instagram ID: <span style='color:#ffffff; font-weight:bold;'>{user_name}</span></p>
-            <div style='background-color: #0077b6; padding: 10px; border-radius: 6px; margin-top: 8px; border: 1px solid #ffffff;'>
-                <p style='font-size: 16px; font-weight: 900; color: #ffffff; margin: 0;'>{saved_gift}</p>
+            <p style='font-size: 15px; margin-top: 4px; color: #aaaaaa; margin-bottom: 0;'>Instagram ID: <span style='color:#ffffff; font-weight:bold;'>{user_name}</span></p>
+            <div style='background-color: #0077b6; padding: 12px; border-radius: 6px; margin-top: 10px; border: 1px solid #ffffff;'>
+                <p style='font-size: 18px; font-weight: 900; color: #ffffff; margin: 0;'>{saved_gift}</p>
             </div>
         </div>
     """, unsafe_allow_html=True)
@@ -232,7 +243,7 @@ if "gift" in query_params:
         color: #ff4b4b;
         text-align: center;
         background-color: #0f0f0f;
-        padding: 10px;
+        padding: 12px;
         border-radius: 8px;
         border: 2px solid #ff4b4b;
     ">
@@ -280,12 +291,12 @@ if "gift" in query_params:
 
 else:
     # 2. INITIAL STATE - DATA CAPTURE (Lead Gate)
-    st.markdown("<p style='text-align:center; font-size:13px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.3); margin-bottom:2px;'>ΕΙΣΑΓΕΤΕ ΤΑ ΣΤΟΙΧΕΙΑ ΣΑΣ ΓΙΑ ΝΑ ΠΑΙΞΕΤΕ</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center; font-size:14px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.3); margin-bottom:4px;'>ΕΙΣΑΓΕΤΕ ΤΑ ΣΤΟΙΧΕΙΑ ΣΑΣ ΓΙΑ ΝΑ ΠΑΙΞΕΤΕ</p>", unsafe_allow_html=True)
     input_name = st.text_input("Όνομα ή Instagram Profile:", value="", placeholder="@username")
     st.write("---")
     
     if input_name.strip() != "":
-        st.markdown("<p style='color:#ffffff; text-align:center; font-weight: bold; font-size:13px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); margin-bottom:2px;'>✓ Η ΣΥΝΔΕΣΗ ΕΝΕΡΓΟΠΟΙΗΘΗΚΕ</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#ffffff; text-align:center; font-weight: bold; font-size:14px; text-shadow: 0 1px 3px rgba(0,0,0,0.3); margin-bottom:4px;'>✓ Η ΣΥΝΔΕΣΗ ΕΝΕΡΓΟΠΟΙΗΘΗΚΕ</p>", unsafe_allow_html=True)
         
         if st.button('ΔΙΕΚΔΙΚΗΣΗ ΔΩΡΟΥ'):
             with st.spinner('Κλήρωση...'):
