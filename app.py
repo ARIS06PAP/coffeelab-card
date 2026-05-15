@@ -133,7 +133,7 @@ st.markdown("""
 # Χρησιμοποιούμε μια έγκυρη URL εικόνα για το logo. Αν έχεις δικό σου link, αντικαθιστάς το src.
 st.markdown("""
     <div class="logo-container">
-        <"https://ecocraft.gr/images/feature_variant/5/coffee_lab1.png" width="160" alt="Coffee Lab Logo">
+        <img src="https://coffeelab.gr/wp-content/uploads/2021/10/logo.png" width="160" alt="Coffee Lab Logo">
     </div>
 """, unsafe_allow_html=True)
 
