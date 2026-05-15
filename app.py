@@ -1,6 +1,6 @@
 # ======================================================
-# COFFEELAB PROJECT - ABSOLUTE CENTERED MOBILE ENGINE
-# Features: HTML Image Injection, Viewport Lock, No-Scroll UI, Lead Gate
+# COFFEELAB PROJECT - MAXIMUM MOBILE OPTIMIZED (ARTISTIC EDITION)
+# Features: Viewport Lock, Lead Gate, Rarity Weights, Live 24h Clock, Base64 Logo
 # ======================================================
 
 import streamlit as st
@@ -9,6 +9,7 @@ import time
 from datetime import datetime
 import zoneinfo
 import requests
+import base64
 
 # --- CONFIG ---
 st.set_page_config(page_title="Coffee Lab Rewards", page_icon="☕", layout="centered")
@@ -27,8 +28,8 @@ st.markdown("""
     }
     
     .block-container {
-        padding-top: 1.5rem !important;
-        padding-bottom: 1.5rem !important;
+        padding-top: 1.2rem !important;
+        padding-bottom: 1.2rem !important;
         padding-left: 1.2rem !important;
         padding-right: 1.2rem !important;
         max-width: 450px !important;
@@ -40,7 +41,7 @@ st.markdown("""
         background: linear-gradient(180deg, #00b4d8 0%, #0077b6 100%);
     }
     
-    /* FORCE ABSOLUTE CENTER ON EVERYTHING */
+    /* FORCE ABSOLUTE CENTER ON EVERYTHING WITH FADE-IN ANIMATION */
     .element-container, .stVerticalBlock, [data-testid="stVerticalBlock"] {
         display: flex !important;
         flex-direction: column !important;
@@ -48,6 +49,12 @@ st.markdown("""
         justify-content: center !important;
         width: 100% !important;
         text-align: center !important;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
     }
     
     /* Απόλυτο Κεντράρισμα του Custom HTML Logo Container */
@@ -56,15 +63,16 @@ st.markdown("""
         justify-content: center !important;
         align-items: center !important;
         width: 100% !important;
-        margin-top: 10px !important;
-        margin-bottom: 15px !important;
+        margin-top: 5px !important;
+        margin-bottom: 10px !important;
         text-align: center !important;
     }
     
     .html-logo-container img {
-        width: 140px !important;
+        width: 130px !important;
         height: auto !important;
         display: block !important;
+        filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.15));
     }
     
     /* TYPOGRAPHY & SCALING UPTICK */
@@ -82,28 +90,34 @@ st.markdown("""
         letter-spacing: 1.5px;
         margin-top: 5px !important;
         margin-bottom: 4px !important;
-        font-size: 28px !important;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        font-size: 26px !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         width: 100% !important;
     }
     
     .brand-subtitle {
         font-family: 'Share Tech Mono', monospace !important;
         color: #f1f1f1 !important;
-        font-size: 12px !important;
+        font-size: 11px !important;
         letter-spacing: 1.5px;
-        margin-bottom: 20px !important;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        margin-bottom: 15px !important;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
         width: 100% !important;
     }
 
-    /* PERFECT MOBILE INPUT BOX */
+    /* PERFECT MOBILE INPUT BOX WITH GLOW */
     div['data-baseweb']="input" {
         background-color: rgba(15, 15, 15, 0.92) !important;
         border: 2px solid #ffffff !important;
         border-radius: 8px !important;
         height: 52px !important;
         width: 100% !important;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: box-shadow 0.3s ease;
+    }
+    
+    div['data-baseweb']="input"]:focus-within {
+        box-shadow: 0 0 15px rgba(255,255,255,0.4) !important;
     }
     
     input {
@@ -127,7 +141,7 @@ st.markdown("""
         width: 100% !important;
     }
 
-    /* THUMB-FRIENDLY ACTION BUTTON */
+    /* THUMB-FRIENDLY ACTION BUTTON WITH HOVER EFFECT */
     .stButton {
         width: 100% !important;
     }
@@ -182,21 +196,37 @@ st.markdown("""
         padding: 10px !important;
         font-size: 13px !important;
         width: 100% !important;
+        border-radius: 8px !important;
     }
     
     hr {
         border-color: rgba(255, 255, 255, 0.25) !important;
         width: 100% !important;
-        margin-top: 12px !important;
-        margin-bottom: 12px !important;
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* ARTISTIC BRAND FOOTER */
+    .brand-footer {
+        margin-top: 15px !important;
+        padding: 10px !important;
+        background: rgba(15, 15, 15, 0.2);
+        border-radius: 8px;
+        width: 100% !important;
+    }
+    .brand-footer p {
+        margin: 2px 0 !important;
+        font-size: 11px !important;
+        color: #f1f1f1 !important;
+    }
+    .brand-footer span {
+        font-weight: 700;
+        color: #ffffff;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # --- BULLETPROOF HTML LOGO INJECTION ---
-# Επειδή το logolab.png είναι τοπικά στο repo σου, το Streamlit Cloud το σερβίρει στο endpoint '/app/static/media/...' 
-# Η βέλτιστη static μέθοδος για να παίξει τοπικά σε HTML είναι να το διαβάσουμε ως Base64 byte array
-import base64
 try:
     with open("logolab.png", "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read()).decode()
@@ -208,7 +238,6 @@ try:
         </div>
     """, unsafe_allow_html=True)
 except:
-    # Fail-safe text σε περίπτωση που δεν βρεθεί το αρχείο
     st.markdown("""
         <div style="display:flex; justify-content:center; align-items:center; flex-direction: column; margin-top:5px; margin-bottom:15px;">
             <span style="font-family: 'Impact', sans-serif; font-size: 36px; font-weight: 900; color: #ffffff; line-height: 0.9;">COFFEE</span>
@@ -242,14 +271,14 @@ if "gift" in query_params:
     st.markdown(f"""
         <div class="success-box">
             <div class="success-title">🎯 ΚΕΡΔΙΣΕΣ!</div>
-            <p style='font-size: 15px; margin-top: 4px; color: #aaaaaa; margin-bottom: 0;'>Instagram ID: <span style='color:#ffffff; font-weight:bold;'>{user_name}</span></p>
+            <p style='font-size: 15px; margin-top: 4px; color: #aaaaaa; margin-bottom: 0;'>ID: <span style='color:#ffffff; font-weight:bold;'>{user_name}</span></p>
             <div style='background-color: #0077b6; padding: 12px; border-radius: 6px; margin-top: 10px; border: 1px solid #ffffff;'>
                 <p style='font-size: 18px; font-weight: 900; color: #ffffff; margin: 0;'>{saved_gift}</p>
             </div>
         </div>
     """, unsafe_allow_html=True)
     
-    st.info("ℹ️ Δείξε την οθόνη στο ταμείο και παράδωσε τη φυσική κάρτα.")
+    st.markdown("<p style='font-size:13px; text-align:center;'>ℹ️ Δείξε την οθόνη στο ταμείο <u><b>ΚΑΙ</b></u> παράδωσε τη φυσική κάρτα.</p>", unsafe_allow_html=True)
     st.write("---")
 
     # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS
@@ -309,8 +338,8 @@ if "gift" in query_params:
 
 else:
     # 2. INITIAL STATE - DATA CAPTURE (Lead Gate)
-    
-    input_name = st.text_input("Όνομα ή Instagram Profile:", value="", placeholder="@username")
+    st.markdown("<p style='text-align:center; font-size:14px; font-weight: bold; color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.3); margin-bottom:4px;'>ΕΙΣΑΓΕΤΕ ΤΑ ΣΤΟΙΧΕΙΑ ΣΑΣ ΓΙΑ ΝΑ ΠΑΙΞΕΤΕ</p>", unsafe_allow_html=True)
+    input_name = st.text_input("Όνομα ή ID:", value="", placeholder="@username")
     st.write("---")
     
     if input_name.strip() != "":
@@ -345,3 +374,11 @@ else:
                 st.rerun()
     else:
         st.button('ΔΙΕΚΔΙΚΗΣΗ ΔΩΡΟΥ (ΕΙΣΑΓΕΤΕ ΟΝΟΜΑ)', disabled=True)
+
+# --- BRAND FOOTER ---
+st.markdown("""
+    <div class="brand-footer">
+        <p>📍 Θα μας βρείτε στην: <span>Λεωφ. Ελ. Βενιζέλου 142, Ηλιούπολη</span></p>
+        <p>🕒 Open: <span>Καθημερινά 06:00 - 21:00</span></p>
+    </div>
+""", unsafe_allow_html=True)
