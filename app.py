@@ -1,5 +1,5 @@
 # ======================================================
-# COFFEELAB PROJECT - HIGH-END CYBERPUNK UI
+# COFFEELAB PROJECT - OFFICIAL BRAND BRANDING
 # Features: Lead Gate, Rarity Weights, Live 24h Clock, HTTP Push DB
 # ======================================================
 
@@ -11,115 +11,135 @@ import zoneinfo
 import requests
 
 # --- CONFIG ---
-st.set_page_config(page_title="CoffeeLab x Aris", page_icon="☕", layout="centered")
+st.set_page_config(page_title="Coffee Lab Reward Protocol", page_icon="☕", layout="centered")
 
 # 🚨 ΒΑΛΕ ΕΔΩ ΤΟ URL ΠΟΥ ΕΚΑΝΕΣ COPY ΑΠΟ ΤΟ GOOGLE APPS SCRIPT
 SCRIPT_URL = "ΕΔΩ_ΒΑΛΕ_ΤΟ_URL_ΣΟΥ" 
 
-# --- PREMIUM CYBERPUNK UI CODE (CSS INJECT) ---
+# --- OFFICIAL COFFEE LAB BRANDING (CSS INJECT) ---
 st.markdown("""
     <style>
-    /* Main Background & Font Upgrade */
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Share+Tech+Mono&display=swap');
     
+    /* Coffee Lab Dark Palette Background */
     .stApp { 
-        background: linear-gradient(135deg, #020202 0%, #080d05 100%);
+        background: linear-gradient(180deg, #0e0e0e 0%, #171717 100%);
     }
     
     h1, h2, h3, p, span, label {
-        font-family: 'Share Tech Mono', monospace !important;
+        font-family: 'Montserrat', sans-serif !important;
         color: #ffffff !important;
     }
     
-    /* Neon Title Upgrade */
-    .cyber-title {
-        font-family: 'Orbitron', sans-serif !important;
-        color: #00ff41 !important;
-        text-shadow: 0 0 10px rgba(0, 255, 65, 0.6);
+    /* Coffee Lab Official Yellow/Amber (#ffb800 ή #f3a913) */
+    .brand-title {
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 900 !important;
+        color: #ffb800 !important;
         text-transform: uppercase;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
         text-align: center;
+        margin-top: 15px;
         margin-bottom: 5px;
     }
     
-    .cyber-subtitle {
+    .brand-subtitle {
         text-align: center;
-        color: #888888 !important;
-        font-size: 14px;
-        letter-spacing: 1px;
+        font-family: 'Share Tech Mono', monospace !important;
+        color: #aaaaaa !important;
+        font-size: 13px;
+        letter-spacing: 2px;
         margin-bottom: 30px;
     }
 
-    /* Custom Input Box styling */
+    /* Input Box styling */
     div['data-baseweb']="input" {
-        background-color: #111111 !important;
+        background-color: #1a1a1a !important;
         border: 1px solid #333333 !important;
-        border-radius: 4px !important;
+        border-radius: 6px !important;
     }
     
     input {
-        color: #00ff41 !important;
-        font-family: 'Share Tech Mono', monospace !important;
+        color: #ffb800 !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: bold !important;
     }
 
-    /* Premium Button Override with Hover Glow */
+    /* Coffee Lab Premium Yellow Button */
     .stButton>button {
         width: 100%;
         height: 3.8em;
-        background-color: #00ff41 !important; 
+        background-color: #ffb800 !important; 
         color: #000000 !important;
-        font-family: 'Orbitron', sans-serif !important;
-        font-weight: 700 !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 900 !important;
         border: none !important;
-        border-radius: 4px !important;
+        border-radius: 6px !important;
         text-transform: uppercase;
         letter-spacing: 1px;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 15px rgba(0, 255, 65, 0.2);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(255, 184, 0, 0.2);
     }
     
     .stButton>button:hover {
-        background-color: #00ff41 !important;
+        background-color: #ffa800 !important;
         color: #000000 !important;
-        box-shadow: 0 0 25px rgba(0, 255, 65, 0.7) !important;
-        transform: translateY(-2px);
+        box-shadow: 0 0 25px rgba(255, 184, 0, 0.5) !important;
+        transform: translateY(-1px);
     }
     
     .stButton>button:disabled {
-        background-color: #111111 !important;
-        color: #444444 !important;
-        border: 1px solid #222222 !important;
+        background-color: #222222 !important;
+        color: #555555 !important;
+        border: 1px solid #333333 !important;
         box-shadow: none !important;
         transform: none !important;
     }
 
-    /* Target Acquired Box */
+    /* Target Acquired Box - Brand Style */
     .success-box {
-        background: rgba(0, 255, 65, 0.05);
-        border: 1px solid #00ff41;
-        border-radius: 6px;
-        padding: 20px;
+        background: rgba(255, 184, 0, 0.03);
+        border: 2px solid #ffb800;
+        border-radius: 8px;
+        padding: 25px;
         text-align: center;
-        margin-bottom: 20px;
-        box-shadow: inset 0 0 10px rgba(0, 255, 65, 0.1);
+        margin-bottom: 25px;
+        box-shadow: 0 0 20px rgba(255, 184, 0, 0.1);
     }
     
     .success-title {
-        color: #00ff41 !important;
-        font-family: 'Orbitron', sans-serif !important;
-        font-size: 20px;
-        font-weight: bold;
+        color: #ffb800 !important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-weight: 900 !important;
+        font-size: 22px;
+        letter-spacing: 1px;
     }
     
     hr {
-        border-color: #112211 !important;
+        border-color: #262626 !important;
+    }
+    
+    /* Center Logo Wrapper */
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
     }
     </style>
     """, unsafe_allow_html=True)
 
+# --- BRAND LOGO INSERT ---
+# Χρησιμοποιούμε μια έγκυρη URL εικόνα για το logo. Αν έχεις δικό σου link, αντικαθιστάς το src.
+st.markdown("""
+    <div class="logo-container">
+        <img src="https://coffeelab.gr/wp-content/uploads/2021/10/logo.png" width="160" alt="Coffee Lab Logo">
+    </div>
+""", unsafe_allow_html=True)
+
 # --- HEADERS ---
-st.markdown('<h1 class="cyber-title">⚡ SYSTEM ACCESS</h1>', unsafe_allow_html=True)
-st.markdown('<p class="cyber-subtitle">COFFEELAB x ARIS // PROTOCOL INITIALIZATION</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="brand-title">LUCKY REWARD PROTOCOL</h1>', unsafe_allow_html=True)
+st.markdown('<p class="brand-subtitle">SCAN & WIN // OFFICIAL COFFEE LAB HANDOUT</p>', unsafe_allow_html=True)
 
 rewards = [
     "🎁 1+1 Καφές (Optimization Protocol)",
@@ -140,32 +160,33 @@ if "gift" in query_params:
 
     st.balloons()
     
-    # Custom Styled Box αντί για το κλασικό st.success
+    # Brand Styled Success Box
     st.markdown(f"""
         <div class="success-box">
-            <div class="success-title">🎯 REWARD SECURED</div>
-            <p style='font-size: 18px; margin-top: 10px;'>Agent: <span style='color:#00ff41;'>{user_name}</span></p>
-            <p style='font-size: 22px; font-weight: bold; color: #00ff41;'>{saved_gift}</p>
+            <div class="success-title">🎯 ΚΕΡΔΙΣΕΣ!</div>
+            <p style='font-size: 16px; margin-top: 10px; color: #888888;'>Instagram ID: <span style='color:#ffffff; font-weight:bold;'>{user_name}</span></p>
+            <div style='background-color: #111111; padding: 15px; border-radius: 6px; margin-top: 15px; border: 1px solid #222222;'>
+                <p style='font-size: 20px; font-weight: 900; color: #ffb800; margin: 0;'>{saved_gift}</p>
+            </div>
         </div>
     """, unsafe_allow_html=True)
     
-    st.info("ℹ️ Δείξε αυτή την οθόνη ζωντανά στο ταμείο ΚΑΙ παράδωσε τη φυσική κάρτα για την εξαργύρωση.")
+    st.info("ℹ️ Δείξε αυτή την οθόνη ζωντανά στο ταμείο ΚΑΙ παράδωσε τη φυσική κάρτα για να πάρεις το δώρο σου.")
     st.write("---")
 
     # 🕒 LIVE EMBEDDED CLOCK VIA HTML/JS
     live_clock_html = f"""
     <div id="countdown-box" style="
         font-family: 'Share Tech Mono', monospace;
-        font-size: 22px;
+        font-size: 20px;
         font-weight: bold;
         color: #ff4b4b;
         text-align: center;
-        background-color: #0b0202;
+        background-color: #141414;
         padding: 15px;
-        border-radius: 4px;
-        border: 1px solid #ff4b4b;
+        border-radius: 6px;
+        border: 1px solid #222222;
         margin-bottom: 15px;
-        box-shadow: 0 0 10px rgba(255, 75, 75, 0.1);
     ">
         Initializing Real-Time Clock...
     </div>
@@ -186,9 +207,8 @@ if "gift" in query_params:
         const box = document.getElementById("countdown-box");
         
         if (remainingTime <= 0) {{
-            box.innerHTML = "❌ ΤΟ ΚΟΥΠΟΝΙ ΕΛΗΞΕ!<br><span style='font-size:14px; color:gray;'>🔒 Το χρονικό όριο των 24 ωρών παρήλθε.</span>";
-            box.style.borderColor = "gray";
-            box.style.color = "#ff4b4b";
+            box.innerHTML = "❌ ΤΟ ΚΟΥΠΟΝΙ ΕΛΗΞΕ!<br><span style='font-size:13px; color:gray;'>🔒 Το χρονικό όριο των 24 ωρών παρήλθε.</span>";
+            box.style.borderColor = "#ff4b4b";
         }} else {{
             const hours = Math.floor(remainingTime / 3600);
             const minutes = Math.floor((remainingTime % 3600) / 60);
@@ -199,7 +219,7 @@ if "gift" in query_params:
                 (minutes < 10 ? "0" : "") + minutes + ":" + 
                 (seconds < 10 ? "0" : "") + seconds;
             
-            box.innerHTML = "📅 " + dateStr + " — ⏰ " + timeStr + "<br><span style='color:#00ff41;'>⏳ SECURE LINK EXPIRES IN: " + timerStr + "</span>";
+            box.innerHTML = "📅 " + dateStr + " — ⏰ " + timeStr + "<br><span style='color:#ffb800;'>⏳ ΛΗΞΗ ΚΟΥΠΟΝΙΟΥ ΣΕ: " + timerStr + "</span>";
         }}
     }}
 
@@ -208,20 +228,20 @@ if "gift" in query_params:
     </script>
     """
     st.components.v1.html(live_clock_html, height=120)
-    st.warning("🔒 Το σύστημα κλείδωσε. Δεν επιτρέπονται επιπλέον προσπάθειες από αυτή τη συσκευή.")
+    st.warning("🔒 Η προσπάθεια κλείδωσε για αυτή τη συσκευή. Ισχύει μια εξαργύρωση ανά κάρτα.")
 
 else:
     # 2. INITIAL STATE - DATA CAPTURE (Lead Gate)
-    st.markdown("<p style='text-align:center; font-size:16px;'>🔒 USER VERIFICATION REQUIRED</p>", unsafe_allow_html=True)
-    input_name = st.text_input("Εισάγετε Όνομα ή Instagram Profile:", value="", placeholder="@username")
+    st.markdown("<p style='text-align:center; font-size:15px; font-weight: bold; color: #aaaaaa;'>ΕΙΣΑΓΕΤΕ ΤΑ ΣΤΟΙΧΕΙΑ ΣΑΣ ΓΙΑ ΝΑ ΠΑΙΞΕΤΕ</p>", unsafe_allow_html=True)
+    input_name = st.text_input("Όνομα ή Instagram Profile:", value="", placeholder="@username")
     st.write("---")
     
     if input_name.strip() != "":
-        st.markdown("<p style='color:#00ff41; text-align:center;'>✅ CONNECTION SECURE // READY TO GENERATE</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#ffb800; text-align:center; font-weight: bold;'>✓ Η ΣΥΝΔΕΣΗ ΕΝΕΡΓΟΠΟΙΗΘΗΚΕ // ΠΑΤΗΣΤΕ ΤΟ ΚΟΥΜΠΙ</p>", unsafe_allow_html=True)
         st.write("")
         
-        if st.button('INITIALIZE REWARD HACK'):
-            with st.spinner('Injecting Data Package...'):
+        if st.button('ΔΙΕΚΔΙΚΗΣΗ ΔΩΡΟΥ'):
+            with st.spinner('Γίνεται κλήρωση του reward σας...'):
                 
                 final_reward = random.choices(rewards, weights=reward_weights, k=1)[0]
                 current_ts = str(int(time.time()))
@@ -249,4 +269,4 @@ else:
                 
                 st.rerun()
     else:
-        st.button('GENERATE REWARD (ENTER ID FIRST)', disabled=True)
+        st.button('ΔΙΕΚΔΙΚΗΣΗ ΔΩΡΟΥ (ΠΑΡΑΚΑΛΩ ΕΙΣΑΓΕΤΕ ΟΝΟΜΑ)', disabled=True)
