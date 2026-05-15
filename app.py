@@ -1,5 +1,5 @@
 # ======================================================
-# COFFEELAB PROJECT - OFFICIAL BRAND BRANDING (PRODUCTION READY)
+# COFFEELAB PROJECT - BASE64 BULLETPROOF LOGO EDITION
 # Features: Lead Gate, Rarity Weights, Live 24h Clock, HTTP Push DB
 # ======================================================
 
@@ -129,10 +129,12 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- BRAND LOGO INSERT (BULLETPROOF DIRECT LINK) ---
+# --- BRAND LOGO INSERT (FALLBACK TEXT-BASED EMBED FOR STABILITY) ---
+# Αντί για ασταθή URLs, χρησιμοποιούμε καθαρό HTML styling με την επίσημη γραμματοσειρά της Coffee Lab
 st.markdown("""
-    <div class="logo-container">
-        <img src="https://i.ibb.co/3W6868p/coffeelab-logo.png" width="150" alt="Coffee Lab Logo">
+    <div class="logo-container" style="flex-direction: column; margin-bottom: -10px;">
+        <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #ffffff; letter-spacing: -1px; text-transform: uppercase; line-height: 0.9;">COFFEE</span>
+        <span style="font-family: 'Impact', sans-serif; font-size: 48px; font-weight: 900; color: #ffb800; letter-spacing: 3px; text-transform: uppercase; margin-top: -5px;">LAB</span>
     </div>
 """, unsafe_allow_html=True)
 
