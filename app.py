@@ -1,6 +1,6 @@
 # ======================================================
-# COFFEELAB PROJECT - THE DEFINITIVE MOBILE ENGINE (100% CENTERED)
-# Features: Global CSS Reset, Force Center Layout, Lead Gate, Rarity Weights
+# COFFEELAB PROJECT - ABSOLUTE CENTERED MOBILE ENGINE
+# Features: HTML Image Injection, Viewport Lock, No-Scroll UI, Lead Gate
 # ======================================================
 
 import streamlit as st
@@ -9,7 +9,6 @@ import time
 from datetime import datetime
 import zoneinfo
 import requests
-from PIL import Image
 
 # --- CONFIG ---
 st.set_page_config(page_title="Coffee Lab Rewards", page_icon="☕", layout="centered")
@@ -32,7 +31,7 @@ st.markdown("""
         padding-bottom: 1.5rem !important;
         padding-left: 1.2rem !important;
         padding-right: 1.2rem !important;
-        max-width: 450px !important; /* Ιδανικό πλάτος για να "σφίξει" σε mobile view */
+        max-width: 450px !important;
         margin: 0 auto !important;
     }
     
@@ -41,7 +40,7 @@ st.markdown("""
         background: linear-gradient(180deg, #00b4d8 0%, #0077b6 100%);
     }
     
-    /* 2. FORCE ABSOLUTE CENTER ON EVERYTHING */
+    /* FORCE ABSOLUTE CENTER ON EVERYTHING */
     .element-container, .stVerticalBlock, [data-testid="stVerticalBlock"] {
         display: flex !important;
         flex-direction: column !important;
@@ -51,16 +50,24 @@ st.markdown("""
         text-align: center !important;
     }
     
-    /* Εξουδετέρωση του αριστερού alignment της εικόνας από το Streamlit */
-    [data-testid="stImage"], [data-testid="stImage"] img {
-        display: block !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
+    /* Απόλυτο Κεντράρισμα του Custom HTML Logo Container */
+    .html-logo-container {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin-top: 10px !important;
+        margin-bottom: 15px !important;
         text-align: center !important;
-        width: 140px !important; /* Ελαφρώς μεγαλύτερο και καθαρό */
     }
     
-    /* 3. TYPOGRAPHY & SCALING UPTICK (Λίγο πιο μεγάλα και bold) */
+    .html-logo-container img {
+        width: 140px !important;
+        height: auto !important;
+        display: block !important;
+    }
+    
+    /* TYPOGRAPHY & SCALING UPTICK */
     h1, h2, h3, p, span, label {
         font-family: 'Montserrat', sans-serif !important;
         color: #ffffff !important;
@@ -73,9 +80,9 @@ st.markdown("""
         color: #ffffff !important;
         text-transform: uppercase;
         letter-spacing: 1.5px;
-        margin-top: 10px !important;
+        margin-top: 5px !important;
         margin-bottom: 4px !important;
-        font-size: 28px !important; /* Μεγαλύτερος, καθαρός τίτλος */
+        font-size: 28px !important;
         text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         width: 100% !important;
     }
@@ -83,19 +90,19 @@ st.markdown("""
     .brand-subtitle {
         font-family: 'Share Tech Mono', monospace !important;
         color: #f1f1f1 !important;
-        font-size: 12px !important; /* Πιο ευανάγνωστο */
+        font-size: 12px !important;
         letter-spacing: 1.5px;
         margin-bottom: 20px !important;
         text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
         width: 100% !important;
     }
 
-    /* 4. PERFECT MOBILE INPUT BOX */
+    /* PERFECT MOBILE INPUT BOX */
     div['data-baseweb']="input" {
         background-color: rgba(15, 15, 15, 0.92) !important;
         border: 2px solid #ffffff !important;
         border-radius: 8px !important;
-        height: 52px !important; /* Άνετο μέγεθος */
+        height: 52px !important;
         width: 100% !important;
     }
     
@@ -103,8 +110,8 @@ st.markdown("""
         color: #00b4d8 !important;
         font-family: 'Montserrat', sans-serif !important;
         font-weight: bold !important;
-        font-size: 16px !important; /* Κλειδώνει το Zoom στα iPhone */
-        text-align: center !important; /* Κεντράρει και το κείμενο που γράφει ο χρήστης */
+        font-size: 16px !important;
+        text-align: center !important;
     }
     
     .stTextInput {
@@ -120,14 +127,14 @@ st.markdown("""
         width: 100% !important;
     }
 
-    /* 5. THUMB-FRIENDLY ACTION BUTTON */
+    /* THUMB-FRIENDLY ACTION BUTTON */
     .stButton {
         width: 100% !important;
     }
     
     .stButton>button {
         width: 100% !important;
-        height: 54px !important; /* Premium ύψος για εύκολο tap */
+        height: 54px !important;
         background-color: #0f0f0f !important; 
         color: #ffffff !important;
         font-family: 'Montserrat', sans-serif !important;
@@ -136,7 +143,7 @@ st.markdown("""
         border-radius: 8px !important;
         text-transform: uppercase;
         letter-spacing: 1px;
-        font-size: 16px !important; /* Πιο έντονα γράμματα */
+        font-size: 16px !important;
         transition: all 0.2s ease;
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
     }
@@ -153,7 +160,7 @@ st.markdown("""
         border: 2px solid rgba(255, 255, 255, 0.2) !important;
     }
 
-    /* 6. SUCCESS COUPON SCREEN BLOCK */
+    /* SUCCESS COUPON SCREEN BLOCK */
     .success-box {
         background: rgba(15, 15, 15, 0.92);
         border: 2px solid #ffffff;
@@ -186,13 +193,24 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- LOCAL LOGO LOAD ---
+# --- BULLETPROOF HTML LOGO INJECTION ---
+# Επειδή το logolab.png είναι τοπικά στο repo σου, το Streamlit Cloud το σερβίρει στο endpoint '/app/static/media/...' 
+# Η βέλτιστη static μέθοδος για να παίξει τοπικά σε HTML είναι να το διαβάσουμε ως Base64 byte array
+import base64
 try:
-    image = Image.open('logolab.png')
-    st.image(image)
+    with open("logolab.png", "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read()).decode()
+    st.markdown(f"""
+        <div class="brand-logo-wrapper" style="display: flex; justify-content: center; width: 100%;">
+            <div class="html-logo-container">
+                <img src="data:image/png;base64,{encoded_string}" alt="Coffee Lab Logo">
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 except:
+    # Fail-safe text σε περίπτωση που δεν βρεθεί το αρχείο
     st.markdown("""
-        <div style="display:flex; justify-content:center; align-items:center; flex-direction: column; margin-top:5px; margin-bottom:5px;">
+        <div style="display:flex; justify-content:center; align-items:center; flex-direction: column; margin-top:5px; margin-bottom:15px;">
             <span style="font-family: 'Impact', sans-serif; font-size: 36px; font-weight: 900; color: #ffffff; line-height: 0.9;">COFFEE</span>
             <span style="font-family: 'Impact', sans-serif; font-size: 36px; font-weight: 900; color: #0f0f0f; letter-spacing: 2px;">LAB</span>
         </div>
