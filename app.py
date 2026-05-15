@@ -1,5 +1,5 @@
 # ======================================================
-# COFFEELAB PROJECT - OFFICIAL BRAND BRANDING
+# COFFEELAB PROJECT - OFFICIAL BRAND BRANDING (PRODUCTION READY)
 # Features: Lead Gate, Rarity Weights, Live 24h Clock, HTTP Push DB
 # ======================================================
 
@@ -13,7 +13,7 @@ import requests
 # --- CONFIG ---
 st.set_page_config(page_title="Coffee Lab Reward Protocol", page_icon="☕", layout="centered")
 
-# 🚨 ΒΑΛΕ ΕΔΩ ΤΟ URL ΠΟΥ ΕΚΑΝΕΣ COPY ΑΠΟ ΤΟ GOOGLE APPS SCRIPT
+# 🚨 PRODUCTION GOOGLE APPS SCRIPT URL LOCKED
 SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2qkoK1xDY9uZnRWXso3yjAbK-iV5KOW2IcSyaEPrQlEItfWkPZjQr_elQA2Fz3ZDNwg/exec" 
 
 # --- OFFICIAL COFFEE LAB BRANDING (CSS INJECT) ---
@@ -31,16 +31,17 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    /* Coffee Lab Official Yellow/Amber (#ffb800 ή #f3a913) */
+    /* Coffee Lab Official Yellow/Amber */
     .brand-title {
-        font-family: 'Montserrat', sans-serif !important;
+        font-family: 'Impact', 'Montserrat', sans-serif !important;
         font-weight: 900 !important;
         color: #ffb800 !important;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 2px;
         text-align: center;
-        margin-top: 15px;
+        margin-top: 20px;
         margin-bottom: 5px;
+        font-size: 32px;
     }
     
     .brand-subtitle {
@@ -109,9 +110,8 @@ st.markdown("""
     
     .success-title {
         color: #ffb800 !important;
-        font-family: 'Montserrat', sans-serif !important;
-        font-weight: 900 !important;
-        font-size: 22px;
+        font-family: 'Impact', sans-serif !important;
+        font-size: 26px;
         letter-spacing: 1px;
     }
     
@@ -124,16 +124,15 @@ st.markdown("""
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 20px;
+        margin-top: 25px;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- BRAND LOGO INSERT ---
-# Χρησιμοποιούμε μια έγκυρη URL εικόνα για το logo. Αν έχεις δικό σου link, αντικαθιστάς το src.
+# --- BRAND LOGO INSERT (BULLETPROOF DIRECT LINK) ---
 st.markdown("""
     <div class="logo-container">
-        <img src="https://coffeelab.gr/wp-content/uploads/2021/10/logo.png" width="160" alt="Coffee Lab Logo">
+        <img src="https://i.ibb.co/3W6868p/coffeelab-logo.png" width="150" alt="Coffee Lab Logo">
     </div>
 """, unsafe_allow_html=True)
 
